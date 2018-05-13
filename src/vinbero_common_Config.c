@@ -1,0 +1,109 @@
+#include <jansson.h>
+#include <libgenc/genc_Tree.h>
+#include <libgenc/genc_ArrayList.h>
+#include "vinbero_common_Config.h"
+
+int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
+    json_t* moduleJson;
+    json_t* moduleConfigJson;
+    json_t* moduleChildrenJson;
+    if((moduleJson = json_object_get((config)->json, moduleId)) != NULL
+       && json_is_object(moduleJson)
+       && (moduleConfigJson = json_object_get(moduleJson, "config")) != NULL
+       && json_is_object(moduleConfigJson)
+       && (moduleChildrenJson = json_object_get(moduleJson, "next")) != NULL
+       && json_is_array(moduleChildrenJson)) {
+        return 0;
+    } else
+        return VINBERO_COMMON_EINVAL;
+}
+
+#define VINBERO_MODULE_CONFIG_GET(config, module, valueName, valueType, out, defaultValue) do { \
+    bool valueFound = false; \
+    json_t* outJson; \
+    for(struct vinbero_common_Module* currentModule = module; \
+        GENC_TREE_NODE_PARENT(currentModule) != NULL; \
+        currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
+        if((outJson = json_object_get(json_object_get(json_object_get((config)->json, currentModule->id), "config"), valueName)) != NULL) { \
+            *(out) = json_##valueType##_value(outJson); \
+            valueFound = true; \
+            break; \
+        } \
+    } \
+    if(valueFound == false) \
+        *(out) = defaultValue; \
+} while(0)
+
+int vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out, int defaultValue) {
+    VINBERO_MODULE_CONFIG_GET(config, module, valueName, integer, out, defaultValue);
+    return 0;
+}
+
+int vinbero_common_Config_getString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out, const char* defaultValue) {
+    VINBERO_MODULE_CONFIG_GET(config, module, valueName, string, out, defaultValue);
+    return 0;
+}
+
+int vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out, double defaultValue) {
+    VINBERO_MODULE_CONFIG_GET(config, module, valueName, number, out, defaultValue);
+    return 0;
+}
+
+#define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \
+    *(ret) = VINBERO_COMMON_EINVAL; \
+    json_t* outJson; \
+    for(struct vinbero_common_Module* currentModule = module; \
+        GENC_TREE_NODE_PARENT(currentModule) != NULL; \
+        currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
+        if((outJson = json_object_get(json_object_get(json_object_get((config)->json, currentModule->id), "config"), valueName)) != NULL) { \
+            *(out) = json_##valueType##_value(outJson); \
+            *(ret) = 0; \
+            break; \
+        } \
+    } \
+} while(0)
+
+int vinbero_common_Config_getRequiredInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out) {
+    int ret;
+    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, integer, out, &ret);
+    return ret;
+}
+
+int vinbero_common_Config_getRequiredString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out) {
+    int ret;
+    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, string, out, &ret);
+    return ret;
+}
+
+int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out) {
+    int ret;
+    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, number, out, &ret);
+    return ret;
+}
+
+int vinbero_common_Config_getModulePath(struct vinbero_common_Config* config, const char* moduleId, const char** modulePath) {
+    *modulePath = json_string_value(json_object_get(json_object_get((config)->json, moduleId), "path"));
+    return 0;
+}
+
+size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* config, const char* moduleId) {
+    json_t* array = json_object_get(json_object_get((config)->json, moduleId), "next");
+    return json_array_size(array);
+}
+
+int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId, struct vinbero_common_Module_Ids* out) {
+    size_t childModuleCount;
+    if((childModuleCount = vinbero_common_Config_getChildModuleCount(config, moduleId)) < 0)
+        return VINBERO_COMMON_EINVAL;
+    json_t* childModuleIdsJson = json_object_get(json_object_get((config)->json, moduleId), "next");
+    GENC_ARRAY_LIST_REALLOC(out, childModuleCount);
+    json_t* childModuleIdJson;
+    size_t index;
+    json_array_foreach(childModuleIdsJson, index, childModuleIdJson)
+        GENC_ARRAY_LIST_PUSH(out, json_string_value(childModuleIdJson));
+    return 0;
+}
+
+int vinbero_common_Config_destroy(struct vinbero_common_Config* config) {
+    json_decref((config)->json);
+}
