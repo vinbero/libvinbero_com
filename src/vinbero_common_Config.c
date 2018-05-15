@@ -49,6 +49,11 @@ int vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct
     return 0;
 }
 
+int vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out, bool defaultValue) {
+    VINBERO_MODULE_CONFIG_GET(config, module, valueName, boolean, out, defaultValue);
+    return 0;
+}
+
 #define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \
     *(ret) = VINBERO_COMMON_EINVAL; \
     json_t* outJson; \
