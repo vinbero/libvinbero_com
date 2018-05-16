@@ -2,7 +2,7 @@
 #include <libgenc/genc_Tree.h>
 #include <libgenc/genc_ArrayList.h>
 #include "vinbero_common_Config.h"
-
+#include "vinbero_common_Log.h"
 int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
     json_t* moduleJson;
     json_t* moduleConfigJson;
@@ -98,8 +98,7 @@ size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* c
 
 int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId, struct vinbero_common_Module_Ids* out) {
     size_t childModuleCount;
-    if((childModuleCount = vinbero_common_Config_getChildModuleCount(config, moduleId)) < 0)
-        return VINBERO_COMMON_EINVAL;
+    childModuleCount = vinbero_common_Config_getChildModuleCount(config, moduleId);
     json_t* childModuleIdsJson = json_object_get(json_object_get((config)->json, moduleId), "next");
     GENC_ARRAY_LIST_REALLOC(out, childModuleCount);
     json_t* childModuleIdJson;

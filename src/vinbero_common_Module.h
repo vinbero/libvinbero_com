@@ -14,6 +14,7 @@ struct vinbero_common_Module {
     const char* id;
     const char* name;
     const char* version;
+    bool needsChildren;
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
     pthread_rwlock_t* rwLock;
