@@ -12,7 +12,7 @@ int vinbero_common_Config_fromString(struct vinbero_common_Config* config, const
             return VINBERO_COMMON_EINVAL;
         }
     } else {
-        VINBERO_COMMON_LOG_FATAL("Config is already allocated");
+        VINBERO_COMMON_LOG_ERROR("Config is already allocated");
         return VINBERO_COMMON_EINVAL;
     }
     return 0;
@@ -26,7 +26,7 @@ int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const c
             return VINBERO_COMMON_EINVAL;
         }
     } else {
-        VINBERO_COMMON_LOG_FATAL("Config is already allocated");
+        VINBERO_COMMON_LOG_ERROR("Config is already allocated");
         return VINBERO_COMMON_EINVAL;
     }
     return 0;
