@@ -3,6 +3,35 @@
 #include <libgenc/genc_ArrayList.h>
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Log.h"
+
+int vinbero_common_Config_fromString(struct vinbero_common_Config* config, const char* input) {
+    json_error_t configError;
+    if(config->json == NULL) {
+        if((config->json = json_loads(input, 0, &configError)) == NULL) {
+            VINBERO_COMMON_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
+            return VINBERO_COMMON_EINVAL;
+        }
+    } else {
+        VINBERO_COMMON_LOG_FATAL("Config is already allocated");
+        return VINBERO_COMMON_EINVAL;
+    }
+    return 0;
+}
+
+int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const char* path) {
+    json_error_t configError;
+    if(config->json == NULL) {
+        if((config->json = json_load_file(path, 0, &configError)) == NULL) {
+            VINBERO_COMMON_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
+            return VINBERO_COMMON_EINVAL;
+        }
+    } else {
+        VINBERO_COMMON_LOG_FATAL("Config is already allocated");
+        return VINBERO_COMMON_EINVAL;
+    }
+    return 0;
+}
+
 int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
     json_t* moduleJson;
     json_t* moduleConfigJson;

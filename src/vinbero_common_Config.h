@@ -9,12 +9,13 @@ struct vinbero_common_Config {
 
 #include "vinbero_common_Module.h"
 
+int vinbero_common_Config_fromString(struct vinbero_common_Config* config, const char* input);
+int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const char* path);
 int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId);
 int vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out, int defaultValue);
 int vinbero_common_Config_getString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out, const char* defaultValue);
 int vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out, double defaultValue);
 int vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out, bool defaultValue);
-
 int vinbero_common_Config_getRequiredInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out);
 int vinbero_common_Config_getRequiredString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out);
 int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out);
