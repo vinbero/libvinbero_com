@@ -22,6 +22,7 @@ int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config
 int vinbero_common_Config_getModulePath(struct vinbero_common_Config* config, const char* moduleId, const char** modulePath);
 size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* config, const char* moduleId);
 int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId, struct vinbero_common_Module_Ids* out);
+int vinbero_common_Config_init(struct vinbero_common_Config* config);
 int vinbero_common_Config_destroy(struct vinbero_common_Config* config);
 
 #endif

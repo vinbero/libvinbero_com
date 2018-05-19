@@ -137,6 +137,12 @@ int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config
     return 0;
 }
 
+int vinbero_common_Config_init(struct vinbero_common_Config* config) {
+    config->json = NULL;
+    return 0;
+}
+
 int vinbero_common_Config_destroy(struct vinbero_common_Config* config) {
     json_decref((config)->json);
+    return 0;
 }
