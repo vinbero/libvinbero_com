@@ -2,7 +2,10 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <pthread.h>
 #include "vinbero_common_Log.h"
+
+//static pthread_mutex_t vinbero_common_Log_mutex;
 
 static const char* vinbero_common_Log_levelString(int level) {
     static const char* levelStrings[] = {
@@ -19,6 +22,7 @@ static const char* vinbero_common_Log_levelString(int level) {
 }
 
 int vinbero_common_Log_raw(int level, const char* source, int line, const char* format, ...) {
+    //pthread_mutex_lock(&vinbero_common_Log_mutex);
     time_t t = time(NULL);
     struct tm now;
     localtime_r(&t, &now);
@@ -30,4 +34,5 @@ int vinbero_common_Log_raw(int level, const char* source, int line, const char* 
     va_end(args);
     fprintf(stderr, "\n");
     return 0;
+//    pthread_mutex_unlock(&vinbero_common_Log_mutex);
 }
