@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Error.h"
 #include "vinbero_common_Module.h"

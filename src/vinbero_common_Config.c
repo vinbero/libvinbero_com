@@ -1,6 +1,7 @@
 #include <jansson.h>
 #include <libgenc/genc_Tree.h>
 #include <libgenc/genc_ArrayList.h>
+#include "vinbero_common_Error.h"
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Log.h"
 

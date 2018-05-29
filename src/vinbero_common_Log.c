@@ -1,13 +1,17 @@
+#include <errno.h>
 #include <time.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
 #include "vinbero_common_Log.h"
 
-int vinbero_common_Log_flag = 0; 
+static int vinbero_common_Log_flag = 0; 
 
-//static pthread_mutex_t vinbero_common_Log_mutex;
+static pthread_mutex_t vinbero_common_Log_mutex;
+static bool vinbero_common_Log_mutexInitialized = false;
+
 
 static const char* vinbero_common_Log_levelString(int level) {
     static const char* levelStrings[] = {
@@ -31,9 +35,19 @@ static int vinbero_common_Log_levelToFlag(int level) {
         return 0;
 }
 
-void vinbero_common_Log_raw(int flag, int level, const char* source, int line, const char* format, ...) {
-    //pthread_mutex_lock(&vinbero_common_Log_mutex);
-    if((vinbero_common_Log_levelToFlag(level) & flag) != 0) {
+int vinbero_common_Log_init(int flag) {
+    vinbero_common_Log_flag = flag;
+    if(pthread_mutex_init(&vinbero_common_Log_mutex, NULL) == -1)
+        return -errno;
+    vinbero_common_Log_mutexInitialized = true;
+    return 0;
+}
+
+void vinbero_common_Log_raw(int level, const char* source, int line, const char* format, ...) {
+    if(!vinbero_common_Log_mutexInitialized)
+        return;
+    pthread_mutex_lock(&vinbero_common_Log_mutex);
+    if((vinbero_common_Log_levelToFlag(level) & vinbero_common_Log_flag) != 0) {
         time_t t = time(NULL);
         struct tm now;
         localtime_r(&t, &now);
@@ -45,5 +59,5 @@ void vinbero_common_Log_raw(int flag, int level, const char* source, int line, c
         va_end(args);
         fprintf(stderr, "\n");
     }
-//    pthread_mutex_unlock(&vinbero_common_Log_mutex);
+    pthread_mutex_unlock(&vinbero_common_Log_mutex);
 }
