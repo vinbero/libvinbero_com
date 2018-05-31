@@ -1,7 +1,7 @@
 #ifndef _VINBERO_COMMON_CALL
 #define _VINBERO_COMMON_CALL
 #define VINBERO_COMMON_CALL(iName, fName, module, ret, ...) do { \
-    struct vinbero_Interface ## iName ## _Interface interface; \
+    struct vinbero_Interface ## iName interface; \
     VINBERO_INTERFACE ## iName ## _DLSYM(&interface, &(module)->dlHandle, ret); \
     if(*ret < 0) { \
         VINBERO_COMMON_LOG_ERROR("VINBERO_%s_DLSYM() failed at module %s, with function %s", #iName, (module)->id, "vinbero_"#iName"_"#fName); \
