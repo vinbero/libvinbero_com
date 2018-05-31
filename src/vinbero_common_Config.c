@@ -10,11 +10,11 @@ int vinbero_common_Config_fromString(struct vinbero_common_Config* config, const
     if(config->json == NULL) {
         if((config->json = json_loads(input, 0, &configError)) == NULL) {
             VINBERO_COMMON_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
-            return VINBERO_COMMON_EINVAL;
+            return VINBERO_COMMON_ERROR_INVALID_CONFIG;
         }
     } else {
         VINBERO_COMMON_LOG_ERROR("Config is already allocated");
-        return VINBERO_COMMON_EINVAL;
+        return VINBERO_COMMON_ERROR_ALREADY;
     }
     return 0;
 }
@@ -24,11 +24,11 @@ int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const c
     if(config->json == NULL) {
         if((config->json = json_load_file(path, 0, &configError)) == NULL) {
             VINBERO_COMMON_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
-            return VINBERO_COMMON_EINVAL;
+            return VINBERO_COMMON_ERROR_INVALID_CONFIG;
         }
     } else {
         VINBERO_COMMON_LOG_ERROR("Config is already allocated");
-        return VINBERO_COMMON_EINVAL;
+        return VINBERO_COMMON_ERROR_ALREADY;
     }
     return 0;
 }
@@ -45,7 +45,7 @@ int vinbero_common_Config_check(struct vinbero_common_Config* config, const char
        && json_is_array(moduleChildrenJson)) {
         return 0;
     } else
-        return VINBERO_COMMON_EINVAL;
+        return VINBERO_COMMON_ERROR_INVALID_CONFIG;
 }
 
 #define VINBERO_MODULE_CONFIG_GET(config, module, valueName, valueType, out, defaultValue) do { \
@@ -85,7 +85,7 @@ int vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct v
 }
 
 #define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \
-    *(ret) = VINBERO_COMMON_EINVAL; \
+    *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
     json_t* outJson; \
     for(struct vinbero_common_Module* currentModule = module; \
         GENC_TREE_NODE_PARENT(currentModule) != NULL; \
