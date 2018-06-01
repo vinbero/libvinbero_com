@@ -15,6 +15,7 @@ struct vinbero_common_Module {
     const char* name;
     const char* version;
     bool childrenRequired;
+    struct vinbero_common_Config* config;
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
     pthread_rwlock_t* rwLock;
@@ -26,7 +27,7 @@ struct vinbero_common_Module_Ids {
     GENC_ARRAY_LIST(const char*);
 };
 
-int vinbero_common_Module_dlopen(struct vinbero_common_Module* module, struct vinbero_common_Config* config);
+int vinbero_common_Module_dlopen(struct vinbero_common_Module* module);
 
 #define VINBERO_COMMON_MODULE_DLSYM(interface, dlHandle, functionName, ret) \
 VINBERO_COMMON_DLSYM(dlHandle, #functionName, (void**)&(interface)->functionName, ret)
