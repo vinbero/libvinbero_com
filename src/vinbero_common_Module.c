@@ -3,6 +3,13 @@
 #include "vinbero_common_Error.h"
 #include "vinbero_common_Module.h"
 
+int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired) {
+    module->name = name;
+    module->version = version;
+    module->childrenRequired = childrenRequired;
+    return 0;
+}
+
 int vinbero_common_Module_dlopen(struct vinbero_common_Module* module) {
     const char* modulePath;
     if((modulePath = json_string_value(json_object_get(json_object_get(module->config->json, (module)->id), "path"))) == NULL)
