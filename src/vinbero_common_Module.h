@@ -29,7 +29,17 @@ struct vinbero_common_Module_Ids {
 
 int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
 
-int vinbero_common_Module_dlopen(struct vinbero_common_Module* module);
+
+//    memset(&module->dlHandle, 0, sizeof(struct fastdl_Handle));
+#define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
+    const char* modulePath; \
+    if((modulePath = json_string_value(json_object_get(json_object_get((module)->config->json, (module)->id), "path"))) == NULL) \
+        *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
+    else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
+        *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
+    else \
+        *(ret) = 0; \
+} while(0)
 
 #define VINBERO_COMMON_MODULE_DLSYM(interface, dlHandle, functionName, ret) do { \
     (interface)->functionName = NULL; \
