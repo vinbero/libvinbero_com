@@ -15,12 +15,12 @@ static bool vinbero_common_Log_mutexInitialized = false;
 
 static const char* vinbero_common_Log_levelString(int level) {
     static const char* levelStrings[] = {
-        "\x1B[37mTRACE\x1B[0m",
-        "\x1B[36mDEBUG\x1B[0m",
-        "\x1B[32mINFO\x1B[0m",
-        "\x1B[33mWARN\x1B[0m",
-        "\x1B[35mERROR\x1B[0m",
-        "\x1B[31mFATAL\x1B[0m",
+        "\x1B[37m[TRACE]\x1B[0m",
+        "\x1B[36m[DEBUG]\x1B[0m",
+        "\x1B[32m[INFO ]\x1B[0m",
+        "\x1B[33m[WARN ]\x1B[0m",
+        "\x1B[35m[ERROR]\x1B[0m",
+        "\x1B[31m[FATAL]\x1B[0m",
     };
     if(0 <= level && level < sizeof(levelStrings))
         return levelStrings[level];
