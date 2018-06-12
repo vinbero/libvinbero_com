@@ -64,24 +64,20 @@ int vinbero_common_Config_check(struct vinbero_common_Config* config, const char
         *(out) = defaultValue; \
 } while(0)
 
-int vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out, int defaultValue) {
+void vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out, int defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, integer, out, defaultValue);
-    return 0;
 }
 
-int vinbero_common_Config_getString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out, const char* defaultValue) {
+void vinbero_common_Config_getString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out, const char* defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, string, out, defaultValue);
-    return 0;
 }
 
-int vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out, double defaultValue) {
+void vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out, double defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, number, out, defaultValue);
-    return 0;
 }
 
-int vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out, bool defaultValue) {
+void vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out, bool defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, boolean, out, defaultValue);
-    return 0;
 }
 
 #define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \

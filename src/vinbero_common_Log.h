@@ -1,6 +1,8 @@
 #ifndef _VINBERO_COMMON_LOG_H
 #define _VINBERO_COMMON_LOG_H
 
+#include <string.h>
+
 #define VINBERO_COMMON_LOG_LEVEL_TRACE 0
 #define VINBERO_COMMON_LOG_LEVEL_DEBUG 1 
 #define VINBERO_COMMON_LOG_LEVEL_INFO 2
@@ -23,6 +25,7 @@ VINBERO_COMMON_LOG_FLAG_FATAL)
 
 int vinbero_common_Log_init(int flag);
 void vinbero_common_Log_raw(int level, const char* source, int line, const char* format, ...);
+void vinbero_common_Log_printLogLevelInfo(int flag);
 
 #define __FILENAME__ strrchr("/" __FILE__, '/') + 1
 

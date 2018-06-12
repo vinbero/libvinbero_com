@@ -12,6 +12,20 @@ static int vinbero_common_Log_flag = 0;
 static pthread_mutex_t vinbero_common_Log_mutex;
 static bool vinbero_common_Log_mutexInitialized = false;
 
+void vinbero_common_Log_printLogLevelInfo(int flag) {
+    if(flag & VINBERO_COMMON_LOG_FLAG_TRACE)
+        VINBERO_COMMON_LOG_INFO("TRACE LEVEL LOGGING ENABLED");
+    if(flag & VINBERO_COMMON_LOG_FLAG_DEBUG)
+        VINBERO_COMMON_LOG_INFO("DEBUG LEVEL LOGGING ENABLED");
+    if(flag & VINBERO_COMMON_LOG_FLAG_INFO)
+        VINBERO_COMMON_LOG_INFO("INFO LEVEL LOGGING ENABLED");
+    if(flag & VINBERO_COMMON_LOG_FLAG_WARN)
+        VINBERO_COMMON_LOG_INFO("WARN LEVEL LOGGING ENABLED");
+    if(flag & VINBERO_COMMON_LOG_FLAG_ERROR)
+        VINBERO_COMMON_LOG_INFO("ERROR LEVEL LOGGING ENABLED");
+    if(flag & VINBERO_COMMON_LOG_FLAG_FATAL)
+        VINBERO_COMMON_LOG_INFO("FATAL LEVEL LOGGING ENABLED");
+}
 
 static const char* vinbero_common_Log_levelString(int level) {
     static const char* levelStrings[] = {

@@ -1,0 +1,3 @@
+add_executable(vinbero_common_Config_test vinbero_common_Config_test.c)
+target_link_libraries(vinbero_common_Config_test vinbero_common cmocka)
+add_test(NAME vinbero_common_Config_test COMMAND vinbero_common_Config_test WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
