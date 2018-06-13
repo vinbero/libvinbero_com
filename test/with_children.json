@@ -1,0 +1,22 @@
+{
+    "core": {
+        "config": {},
+        "next": ["vinbero_dummy1", "vinbero_dummy2", "vinbero_dummy3"]
+    },
+    "vinbero_dummy1": {
+        "path": "/usr/local/lib/vinbero/vinbero_dummy.so",
+        "config": {},
+        "next": []
+    },
+    "vinbero_dummy2": {
+        "path": "/usr/local/lib/vinbero/vinbero_dummy.so",
+        "config": {},
+        "next": []
+    },
+    "vinbero_dummy3": {
+        "path": "/usr/local/lib/vinbero/vinbero_dummy.so",
+        "config": {},
+        "next": []
+    }
+}
+

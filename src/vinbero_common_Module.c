@@ -9,6 +9,15 @@ int vinbero_common_Module_init(struct vinbero_common_Module* module, const char*
     module->childrenRequired = childrenRequired;
     return 0;
 }
+
+int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids) {
+    GENC_ARRAY_LIST_INIT(ids);
+}
+
+int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids) {
+    GENC_ARRAY_LIST_FREE(ids);
+}
+
 /*
 int vinbero_common_Module_dlopen(struct vinbero_common_Module* module) {
     const char* modulePath;

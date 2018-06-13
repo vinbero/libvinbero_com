@@ -29,6 +29,9 @@ struct vinbero_common_Module_Ids {
 
 int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
 
+int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids);
+
+int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
 
 //    memset(&module->dlHandle, 0, sizeof(struct fastdl_Handle));
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
