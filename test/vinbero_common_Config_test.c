@@ -57,6 +57,7 @@ static void test_Config_getChildModuleCount(void** state) {
 static void test_Config_getChildModuleIds(void** state) {
     struct vinbero_common_Config config;
     struct vinbero_common_Module_Ids ids;
+
     vinbero_common_Module_Ids_init(&ids);
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "with_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
