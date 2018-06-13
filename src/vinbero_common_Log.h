@@ -23,7 +23,9 @@ VINBERO_COMMON_LOG_FLAG_WARN |  \
 VINBERO_COMMON_LOG_FLAG_ERROR | \
 VINBERO_COMMON_LOG_FLAG_FATAL)
 
-int vinbero_common_Log_init(int flag);
+#define VINBERO_COMMON_LOG_OPTION_COLOR 1
+
+int vinbero_common_Log_init(int flag, int option);
 void vinbero_common_Log_raw(int level, const char* source, int line, const char* format, ...);
 void vinbero_common_Log_printLogLevelInfo(int flag);
 
