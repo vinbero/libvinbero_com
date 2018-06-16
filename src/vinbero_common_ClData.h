@@ -5,7 +5,8 @@
 #include <libgenc/genc_Tree.h>
 
 struct vinbero_common_ClData {
-    union genc_Generic generic;
+    union genc_Generic generic; // Should be renamed to object?
+    void** args;
     GENC_TREE_NODE(struct vinbero_common_ClData, struct vinbero_common_ClData*);
 };
 

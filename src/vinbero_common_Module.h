@@ -18,6 +18,7 @@ struct vinbero_common_Module {
     const char* id;
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
+    void** args; // args from parentModule
     pthread_rwlock_t* rwLock;
     pthread_key_t* tlModuleKey;
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
