@@ -19,8 +19,10 @@ struct vinbero_common_Module {
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
     void* arg; // arg from parentModule
+/*
     pthread_rwlock_t* rwLock;
     pthread_key_t* tlModuleKey;
+*/
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
@@ -34,7 +36,6 @@ int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids);
 
 int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
 
-//    memset(&module->dlHandle, 0, sizeof(struct fastdl_Handle));
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
     const char* modulePath; \
     if((modulePath = json_string_value(json_object_get(json_object_get((module)->config->json, (module)->id), "path"))) == NULL) \
