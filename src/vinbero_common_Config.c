@@ -67,18 +67,22 @@ int vinbero_common_Config_check(struct vinbero_common_Config* config, const char
 
 void vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out, int defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, integer, out, defaultValue);
+    VINBERO_COMMON_LOG_DEBUG("Config option %s: %d", valueName, *out);
 }
 
 void vinbero_common_Config_getString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out, const char* defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, string, out, defaultValue);
+    VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out);
 }
 
 void vinbero_common_Config_getDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out, double defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, number, out, defaultValue);
+    VINBERO_COMMON_LOG_DEBUG("Config option %s: %f", valueName, *out);
 }
 
 void vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out, bool defaultValue) {
     VINBERO_MODULE_CONFIG_GET(config, module, valueName, boolean, out, defaultValue);
+    VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out == true ? "true" : "false");
 }
 
 #define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \
@@ -100,18 +104,32 @@ void vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct 
 int vinbero_common_Config_getRequiredInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out) {
     int ret;
     VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, integer, out, &ret);
+    if(ret == VINBERO_COMMON_STATUS_SUCCESS)
+        VINBERO_COMMON_LOG_DEBUG("Config option %s: %d", valueName, *out);
     return ret;
 }
 
 int vinbero_common_Config_getRequiredString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out) {
     int ret;
     VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, string, out, &ret);
+    if(ret == VINBERO_COMMON_STATUS_SUCCESS)
+        VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out);
     return ret;
 }
 
 int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out) {
     int ret;
     VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, number, out, &ret);
+    if(ret == VINBERO_COMMON_STATUS_SUCCESS)
+        VINBERO_COMMON_LOG_DEBUG("Config option %s: %f", valueName, *out);
+    return ret;
+}
+
+int vinbero_common_Config_getRequiredBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out) {
+    int ret;
+    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, number, out, &ret);
+    if(ret == VINBERO_COMMON_STATUS_SUCCESS)
+        VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out == true ? "true" : "false");
     return ret;
 }
 
