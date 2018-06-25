@@ -10,7 +10,6 @@ list(APPEND public_headers "vinbero_common_ClModule.h")
 list(APPEND public_headers "vinbero_common_Dlsym.h")
 list(APPEND public_headers "vinbero_common_TlModule.h")
 set_target_properties(vinbero_common PROPERTIES
-                                     C_STANDARD 11
                                      PUBLIC_HEADER "${public_headers}")
 install(TARGETS vinbero_common
         LIBRARY DESTINATION lib
