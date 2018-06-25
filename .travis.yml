@@ -14,7 +14,7 @@ install:
   - cd cmocka/build
   - make && sudo make install
   - cd ../../
-  - sudo apt-get install -y uthash-dev
+  - sudo apt-get install -y libjansson-dev
 before_script:
   - cmake -version
   - make --version 
