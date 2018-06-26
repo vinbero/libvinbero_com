@@ -10,11 +10,25 @@ before_install:
   - cd build
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
   - cd ../../
+
+  - git clone https://github.com/vinbero/libgenc
+  - cd libgenc
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
+  - cd ../../
+
 install:
+  - sudo apt-get install -y libjansson-dev
+
   - cd cmocka/build
   - make && sudo make install
   - cd ../../
-  - sudo apt-get install -y libjansson-dev
+
+  - cd libgenc/build
+  - make && sudo make install
+  - cd ../../
+
 before_script:
   - cmake -version
   - make --version 
