@@ -50,6 +50,7 @@ install:
   - make
   - make check
   - sudo make install
+  - cd ../
 
   - pwd
   - cd libgenc/build
