@@ -4,6 +4,7 @@ language: c
 compiler:
   - gcc
 before_install:
+  - pwd
   - git clone git://git.cryptomilk.org/projects/cmocka.git 
   - cd cmocka
   - mkdir build
@@ -11,11 +12,14 @@ before_install:
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
   - cd ../../
 
+  - pwd
   - git clone https://github.com/akheron/jansson
   - cd jansson
   - autoreconf -i
   - ./configure
+  - cd ../
 
+  - pwd
   - git clone https://github.com/vinbero/libgenc
   - cd libgenc
   - mkdir build
@@ -23,6 +27,7 @@ before_install:
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
   - cd ../../
 
+  - pwd
   - git clone https://github.com/vinbero/libfastdl
   - cd libfastdl
   - mkdir build
@@ -34,19 +39,23 @@ install:
   - sudo apt-get install -y uthash-dev
 #  - sudo apt-get install -y autoconf
 
+  - pwd
   - cd cmocka/build
   - make && sudo make install
   - cd ../../
 
+  - pwd
   - cd jansson
   - make
   - make check
   - make install
 
+  - pwd
   - cd libgenc/build
   - make && sudo make install
   - cd ../../
 
+  - pwd
   - cd libfastdl/build
   - make && sudo make install
   - cd ../../
