@@ -16,7 +16,7 @@ before_install:
   - git clone https://github.com/akheron/jansson
   - cd jansson
   - autoreconf -i
-  - ./configure
+  - ./configure --prefix=/usr
   - cd ../
 
   - pwd
