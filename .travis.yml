@@ -41,23 +41,26 @@ install:
 
   - pwd
   - cd cmocka/build
-  - make && sudo make install
+  - make
+  - sudo make install
   - cd ../../
 
   - pwd
   - cd jansson
   - make
   - make check
-  - make install
+  - sudo make install
 
   - pwd
   - cd libgenc/build
-  - make && sudo make install
+  - make
+  - sudo make install
   - cd ../../
 
   - pwd
   - cd libfastdl/build
-  - make && sudo make install
+  - make
+  - sudo make install
   - cd ../../
 
 before_script:
