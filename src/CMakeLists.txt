@@ -1,5 +1,5 @@
 add_library(vinbero_common SHARED vinbero_common_Log.c vinbero_common_Config.c vinbero_common_Module.c)
-target_link_libraries(vinbero_common jansson)
+target_link_libraries(vinbero_common jansson fastdl)
 list(APPEND public_headers "vinbero_common_Module.h")
 list(APPEND public_headers "vinbero_common_Config.h")
 list(APPEND public_headers "vinbero_common_Log.h")
