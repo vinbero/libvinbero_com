@@ -11,6 +11,11 @@ before_install:
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
   - cd ../../
 
+  - git clone https://github.com/akheron/jansson
+  - cd jansson
+  - autoreconf -i
+  - ./configure
+
   - git clone https://github.com/vinbero/libgenc
   - cd libgenc
   - mkdir build
@@ -26,12 +31,17 @@ before_install:
   - cd ../../
 
 install:
-  - sudo apt-get install -y libjansson-dev
   - sudo apt-get install -y uthash-dev
+#  - sudo apt-get install -y autoconf
 
   - cd cmocka/build
   - make && sudo make install
   - cd ../../
+
+  - cd jansson
+  - make
+  - make check
+  - make install
 
   - cd libgenc/build
   - make && sudo make install
