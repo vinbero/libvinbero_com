@@ -8,7 +8,7 @@ list(APPEND public_headers "vinbero_common_Error.h")
 list(APPEND public_headers "vinbero_common_Status.h")
 list(APPEND public_headers "vinbero_common_Dlsym.h")
 list(APPEND public_headers "vinbero_common_Call.h")
-set_target_properties(vinbero_common PROPERTIES PUBLIC_HEADER ${public_headers})
+set_target_properties(vinbero_common PROPERTIES PUBLIC_HEADER "${public_headers}")
 target_link_libraries(vinbero_common jansson fastdl)
 install(TARGETS vinbero_common
         LIBRARY DESTINATION lib
