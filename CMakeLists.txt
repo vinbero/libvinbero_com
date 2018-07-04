@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 project(libvinbero_common C)
-enable_testing()
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -11,4 +10,5 @@ else()
 endif()
 
 add_subdirectory(src)
+enable_testing()
 add_subdirectory(test)
