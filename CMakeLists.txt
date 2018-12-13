@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(libvinbero_common C)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
