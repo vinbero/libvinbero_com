@@ -8,6 +8,7 @@ struct vinbero_common_TlModule {
     struct vinbero_common_Module* module;
     union genc_Generic localTlModule;
     void* arg;
+    int* exitEventFd;
     GENC_TREE_NODE(struct vinbero_common_TlModule, struct vinbero_common_TlModule*);
 };
 
