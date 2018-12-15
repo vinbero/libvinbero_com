@@ -5,7 +5,8 @@
 #include "vinbero_common_Error.h"
 
 #define VINBERO_COMMON_DLSYM(dlHandle, functionName, out, ret) do { \
-    if(fastdl_sym(dlHandle, functionName, (void*)out) == -1) \
+    FASTDL_SYM(dlHandle, functionName, out, ret) \
+    if(*(ret) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLSYM; \
     else \
         *(ret) = 0; \
