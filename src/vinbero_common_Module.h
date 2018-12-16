@@ -9,6 +9,8 @@
 #include <libgenc/genc_ArrayList.h>
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Dlsym.h"
+#include "vinbero_common_Error.h"
+#include "vinbero_common_Status.h"
 
 struct vinbero_common_Module {
     const char* name;
@@ -43,7 +45,7 @@ int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
     else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
     else \
-        *(ret) = 0; \
+        *(ret) = VINBERO_COMMON_STATUS_SUCCESS; \
 } while(0)
 
 #define VINBERO_COMMON_MODULE_DLSYM(interface, dlHandle, functionName, ret) do { \
