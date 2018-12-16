@@ -133,6 +133,14 @@ int vinbero_common_Config_getRequiredBool(struct vinbero_common_Config* config, 
     return ret;
 }
 
+#define VINBERO_COMMON_CONFIG_MGET_REQUIRED(config, module, key, type, value, ret) \
+do { \
+    *(value) = json_##type##_value(json_object_get(json_object_get((config)->json, (module)->id), key)); \
+    if(*(value) == NULL) \
+        return VINBERO_COMMON_ERROR_NOT_FOUND; \
+    return VINBERO_COMMON_STATUS_SUCCESS; \
+} while(0)
+
 int vinbero_common_Config_getModulePath(struct vinbero_common_Config* config, const char* moduleId, const char** modulePath) {
     *modulePath = json_string_value(json_object_get(json_object_get((config)->json, moduleId), "path"));
     return VINBERO_COMMON_STATUS_SUCCESS;
