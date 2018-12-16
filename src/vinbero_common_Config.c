@@ -85,7 +85,7 @@ void vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct 
     VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out == true ? "true" : "false");
 }
 
-#define VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, valueType, out, ret) do { \
+#define VINBERO_MODULE_CONFIG_GET_REQ(config, module, valueName, valueType, out, ret) do { \
     *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
     json_t* outJson; \
     for(struct vinbero_common_Module* currentModule = module; \
@@ -103,7 +103,7 @@ void vinbero_common_Config_getBool(struct vinbero_common_Config* config, struct 
 
 int vinbero_common_Config_getRequiredInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, int* out) {
     int ret;
-    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, integer, out, &ret);
+    VINBERO_MODULE_CONFIG_GET_REQ(config, module, valueName, integer, out, &ret);
     if(ret == VINBERO_COMMON_STATUS_SUCCESS)
         VINBERO_COMMON_LOG_DEBUG("Config option %s: %d", valueName, *out);
     return ret;
@@ -111,7 +111,7 @@ int vinbero_common_Config_getRequiredInt(struct vinbero_common_Config* config, s
 
 int vinbero_common_Config_getRequiredString(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, const char** out) {
     int ret;
-    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, string, out, &ret);
+    VINBERO_MODULE_CONFIG_GET_REQ(config, module, valueName, string, out, &ret);
     if(ret == VINBERO_COMMON_STATUS_SUCCESS)
         VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out);
     return ret;
@@ -119,7 +119,7 @@ int vinbero_common_Config_getRequiredString(struct vinbero_common_Config* config
 
 int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, double* out) {
     int ret;
-    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, number, out, &ret);
+    VINBERO_MODULE_CONFIG_GET_REQ(config, module, valueName, number, out, &ret);
     if(ret == VINBERO_COMMON_STATUS_SUCCESS)
         VINBERO_COMMON_LOG_DEBUG("Config option %s: %f", valueName, *out);
     return ret;
@@ -127,23 +127,10 @@ int vinbero_common_Config_getRequiredDouble(struct vinbero_common_Config* config
 
 int vinbero_common_Config_getRequiredBool(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* valueName, bool* out) {
     int ret;
-    VINBERO_MODULE_CONFIG_GET_REQUIRED(config, module, valueName, number, out, &ret);
+    VINBERO_MODULE_CONFIG_GET_REQ(config, module, valueName, number, out, &ret);
     if(ret == VINBERO_COMMON_STATUS_SUCCESS)
         VINBERO_COMMON_LOG_DEBUG("Config option %s: %s", valueName, *out == true ? "true" : "false");
     return ret;
-}
-
-#define VINBERO_COMMON_CONFIG_MGET_REQUIRED(config, module, key, type, value, ret) \
-do { \
-    *(value) = json_##type##_value(json_object_get(json_object_get((config)->json, (module)->id), key)); \
-    if(*(value) == NULL) \
-        return VINBERO_COMMON_ERROR_NOT_FOUND; \
-    return VINBERO_COMMON_STATUS_SUCCESS; \
-} while(0)
-
-int vinbero_common_Config_getModulePath(struct vinbero_common_Config* config, const char* moduleId, const char** modulePath) {
-    *modulePath = json_string_value(json_object_get(json_object_get((config)->json, moduleId), "path"));
-    return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
 size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* config, const char* moduleId) {

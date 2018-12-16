@@ -21,10 +21,6 @@ struct vinbero_common_Module {
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
     void* arg; // arg from parentModule
-/*
-    pthread_rwlock_t* rwLock;
-    pthread_key_t* tlModuleKey;
-*/
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
@@ -40,8 +36,9 @@ int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
     const char* modulePath; \
-    if((modulePath = json_string_value(json_object_get(json_object_get((module)->config->json, (module)->id), "path"))) == NULL) \
-        *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
+    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", string, &modulePath, ret); \
+    if(*(ret) < VINBERO_COMMON_STATUS_SUCCESS) \
+        *(ret) = VINBERO_COMMON_ERROR_NOT_FOUND; \
     else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
     else \

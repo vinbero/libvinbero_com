@@ -26,4 +26,12 @@ int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config
 int vinbero_common_Config_init(struct vinbero_common_Config* config);
 int vinbero_common_Config_destroy(struct vinbero_common_Config* config);
 
+#define VINBERO_COMMON_CONFIG_MGET_REQ(config, module, key, type, value, ret) \
+do { \
+    *(value) = json_##type##_value(json_object_get(json_object_get((config)->json, (module)->id), key)); \
+    if(*(value) == NULL) \
+        *(ret) = VINBERO_COMMON_ERROR_NOT_FOUND; \
+    *(ret) = VINBERO_COMMON_STATUS_SUCCESS; \
+} while(0)
+
 #endif
