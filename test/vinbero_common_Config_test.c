@@ -20,6 +20,7 @@ static void test_Config_fromFile(void** state) {
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "no_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
     vinbero_common_Config_destroy(&config);
+
 }
 
 static void test_Config_check(void** state) {
@@ -39,6 +40,7 @@ static void test_Config_check(void** state) {
     assert_int_equal(vinbero_common_Config_fromFile(&config, "no_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
     assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_STATUS_SUCCESS);
     vinbero_common_Config_destroy(&config);
+
 }
 
 static void test_Config_getChildModuleCount(void** state) {

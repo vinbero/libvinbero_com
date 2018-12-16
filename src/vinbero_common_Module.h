@@ -9,7 +9,6 @@
 #include <libgenc/genc_ArrayList.h>
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Dlsym.h"
-#include "vinbero_common_Status.h"
 
 struct vinbero_common_Module {
     const char* name;
@@ -39,8 +38,7 @@ int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
     const char* modulePath; \
-    *(ret) = vinbero_common_Config_getRequiredString((module)->config, module, "path", &(modulePath)); \
-    if(ret != VINBERO_COMMON_STATUS_SUCCESS) \
+    if((modulePath = json_string_value(json_object_get(json_object_get((module)->config->json, (module)->id), "path"))) == NULL) \
         *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
     else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
