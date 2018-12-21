@@ -15,34 +15,34 @@ struct vinbero_common_Object {
 };
 
 #define VINBERO_COMMON_OBJECT_IS_BOOLEAN(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_BOOLEAN
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_BOOLEAN
 
 #define VINBERO_COMMON_OBJECT_IS_INTEGER(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_INTEGER
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_INTEGER
 
 #define VINBERO_COMMON_OBJECT_IS_REAL(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_REAL
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_REAL
 
 #define VINBERO_COMMON_OBJECT_IS_STRING(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_STRING
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_STRING
 
 #define VINBERO_COMMON_OBJECT_IS_ARRAY(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_ARRAY
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_ARRAY
 
 #define VINBERO_COMMON_OBJECT_IS_MAP(object) \
-object->type == VINBERO_COMMON_OBJECT_TYPE_MAP
+(object)->type == VINBERO_COMMON_OBJECT_TYPE_MAP
 
 #define VINBERO_COMMON_OBJECT_EVAL_BOOLEAN(object) \
-object->data.boolean
+(object)->data.boolean
 
 #define VINBERO_COMMON_OBJECT_EVAL_INTEGER(object) \
-object->data.integer
+(object)->data.integer
 
 #define VINBERO_COMMON_OBJECT_EVAL_REAL(object) \
-object->data.real
+(object)->data.real
 
 #define VINBERO_COMMON_OBJECT_EVAL_STRING(object, value, ret) \
-object->data.string
+(object)->data.string
 
 #define VINBERO_COMMON_OBJECT_ARRAY_GET(object, index) \
 GENC_TREE_NODE_GET_CHILD(object, index)
