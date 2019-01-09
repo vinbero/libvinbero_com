@@ -1,17 +1,25 @@
 #ifndef _VINBERO_COMMON_OBJECT_H
 #define _VINBERO_COMMON_OBJECT_H
 
+enum vinbero_common_Object_Type {
+    VINBERO_COMMON_OBJECT_TYPE_BOOLEAN,
+    VINBERO_COMMON_OBJECT_TYPE_INTEGER,
+    VINBERO_COMMON_OBJECT_TYPE_REAL,
+    VINBERO_COMMON_OBJECT_TYPE_STRING,
+    VINBERO_COMMON_OBJECT_TYPE_ARRAY,
+    VINBERO_COMMON_OBJECT_TYPE_MAP
+};
+
 struct vinbero_common_Object {
-    union data {
+    enum vinbero_common_Object_Type type;
+    union {
        bool boolean;
        int integer;
        double real;
        char* string;
        GENC_TREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
-       // GENC_HTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
-    };
-    enum vinbero_common_Object_Type type;
-    json_t* json;
+       GENC_MTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
+    } value;
 };
 
 #define VINBERO_COMMON_OBJECT_IS_BOOLEAN(object) \
@@ -33,16 +41,16 @@ struct vinbero_common_Object {
 (object)->type == VINBERO_COMMON_OBJECT_TYPE_MAP
 
 #define VINBERO_COMMON_OBJECT_EVAL_BOOLEAN(object) \
-(object)->data.boolean
+(object)->value.boolean
 
 #define VINBERO_COMMON_OBJECT_EVAL_INTEGER(object) \
-(object)->data.integer
+(object)->value.integer
 
 #define VINBERO_COMMON_OBJECT_EVAL_REAL(object) \
-(object)->data.real
+(object)->value.real
 
 #define VINBERO_COMMON_OBJECT_EVAL_STRING(object, value, ret) \
-(object)->data.string
+(object)->value.string
 
 #define VINBERO_COMMON_OBJECT_ARRAY_GET(object, index) \
 GENC_TREE_NODE_GET_CHILD(object, index)
