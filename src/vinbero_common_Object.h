@@ -1,6 +1,10 @@
 #ifndef _VINBERO_COMMON_OBJECT_H
 #define _VINBERO_COMMON_OBJECT_H
 
+#include <string.h>
+#include <libgenc/genc_Tree.h>
+#include <libgenc/genc_Mtree.h>
+
 enum vinbero_common_Object_Type {
     VINBERO_COMMON_OBJECT_TYPE_BOOLEAN,
     VINBERO_COMMON_OBJECT_TYPE_INTEGER,
@@ -21,6 +25,16 @@ struct vinbero_common_Object {
        GENC_MTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
     };
 };
+
+#define VINBERO_COMMON_OBJECT_INIT(object, _type) { \
+    memset(object, 0, sizeof(struct vinbero_common_Object)); \
+    (object)->type = _type; \
+    if(VINBERO_COMMON_OBJECT_IS_ARRAY(object)) { \
+        GENC_TREE_NODE_INIT(object); \
+    } else if(VINBERO_COMMON_OBJECT_IS_MAP(object)) { \
+        GENC_MTREE_NODE_INIT(object); \
+    } \
+}
 
 #define VINBERO_COMMON_OBJECT_IS_BOOLEAN(object) \
 (object)->type == VINBERO_COMMON_OBJECT_TYPE_BOOLEAN
@@ -74,5 +88,7 @@ GENC_HTREE_NODE_GET_CHILD(object, key)
 #define VINBERO_COMMON_OBJECT_MAP_FOR_EACH_END \
     } \
 } while(0)
+
+#define VINBERO_COMMON_OBJECT_FROM_JSON(json, object)
 
 #endif
