@@ -19,7 +19,7 @@ struct vinbero_common_Object {
        char* string;
        GENC_TREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
        GENC_MTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
-    } value;
+    };
 };
 
 #define VINBERO_COMMON_OBJECT_IS_BOOLEAN(object) \
@@ -41,16 +41,16 @@ struct vinbero_common_Object {
 (object)->type == VINBERO_COMMON_OBJECT_TYPE_MAP
 
 #define VINBERO_COMMON_OBJECT_EVAL_BOOLEAN(object) \
-(object)->value.boolean
+(object)->boolean
 
 #define VINBERO_COMMON_OBJECT_EVAL_INTEGER(object) \
-(object)->value.integer
+(object)->integer
 
 #define VINBERO_COMMON_OBJECT_EVAL_REAL(object) \
-(object)->value.real
+(object)->real
 
 #define VINBERO_COMMON_OBJECT_EVAL_STRING(object, value, ret) \
-(object)->value.string
+(object)->string
 
 #define VINBERO_COMMON_OBJECT_ARRAY_GET(object, index) \
 GENC_TREE_NODE_GET_CHILD(object, index)
