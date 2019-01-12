@@ -40,7 +40,6 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json) {
         json_array_foreach(json, index, value) {
             childObject = vinbero_common_Object_fromJson(value);
             GENC_TREE_NODE_ADD_CHILD(object, childObject);
-            free(childObject);
         }
         break;
     case JSON_OBJECT:

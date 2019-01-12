@@ -16,6 +16,9 @@ int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids) {
 }
 
 int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids) {
+    GENC_ARRAY_LIST_FOR_EACH(ids, index) {
+        free(GENC_ARRAY_LIST_GET(ids, index));
+    }
     GENC_ARRAY_LIST_FREE(ids);
     return  0;
 }

@@ -24,8 +24,12 @@ struct vinbero_common_Module {
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
+struct vinbero_common_Module_Id {
+    const char* value;
+};
+
 struct vinbero_common_Module_Ids {
-    GENC_ARRAY_LIST(const char*);
+    GENC_ARRAY_LIST(struct vinbero_common_Module_Id);
 };
 
 int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);

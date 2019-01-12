@@ -144,9 +144,13 @@ int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config
     json_t* childModuleIdsJson = json_object_get(json_object_get((config)->json, moduleId), "next");
     GENC_ARRAY_LIST_REALLOC(out, childModuleCount);
     json_t* childModuleIdJson;
+    struct vinbero_common_Module_Id* id;
     size_t index;
-    json_array_foreach(childModuleIdsJson, index, childModuleIdJson)
-        GENC_ARRAY_LIST_PUSH(out, json_string_value(childModuleIdJson));
+    json_array_foreach(childModuleIdsJson, index, childModuleIdJson) {
+        id = malloc(sizeof(struct vinbero_common_Module_Id));
+        id->value = json_string_value(childModuleIdJson);
+        GENC_ARRAY_LIST_PUSH(out, id);
+    }
     return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
