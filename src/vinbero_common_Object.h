@@ -30,6 +30,7 @@ struct vinbero_common_Object {
     };
 };
 
+void vinbero_common_Object_destroy(struct vinbero_common_Object* object);
 struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json);
 
 #define VINBERO_COMMON_OBJECT_INIT(object, _type) { \
@@ -41,6 +42,9 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json);
         GENC_MTREE_NODE_INIT(object); \
     } \
 }
+
+#define VINBERO_COMMON_OBJECT_TYPE(object) \
+(object)->type
 
 #define VINBERO_COMMON_OBJECT_IS_BOOLEAN(object) \
 (object)->type == VINBERO_COMMON_OBJECT_TYPE_BOOLEAN
