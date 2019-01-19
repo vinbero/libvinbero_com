@@ -4,9 +4,8 @@
 #include "vinbero_common_Status.h"
 #include "vinbero_common_Module.h"
 
-int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired) {
+void vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired) {
     module->name = name;
     module->version = version;
     module->childrenRequired = childrenRequired;
-    return VINBERO_COMMON_STATUS_SUCCESS;
 }

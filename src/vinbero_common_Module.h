@@ -24,7 +24,7 @@ struct vinbero_common_Module {
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
-int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
+void vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
     const char* modulePath; \

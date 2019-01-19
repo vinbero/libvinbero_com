@@ -82,38 +82,4 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json);
 #define VINBERO_COMMON_OBJECT_CONSTRING(object) \
 (object)->constring
 
-/*
-#define VINBERO_COMMON_OBJECT_ARRAY_GET(object, index) \
-GENC_TREE_NODE_GET_CHILD(object, index)
-
-#define VINBERO_COMMON_OBJECT_ARRAY_SIZE(object) \
-GENC_TREE_NODE_CHILD_COUNT(object)
-
-#define VINBERO_COMMON_OBJECT_ARRAY_ADD(object, child) \
-GENC_TREE_NODE_ADD_CHILD(object, child)
-
-#define VINBERO_COMMON_OBJECT_MAP_GET(object, key, keyLength, child) \
-GENC_MTREE_NODE_GET_CHILD(object, key, keyLength, child)
-
-#define VINBERO_COMMON_OBJECT_MAP_SIZE(object) \
-GENC_MTREE_NODE_CHILD_COUNT(object)
-
-#define VINBERO_COMMON_OBJECT_MAP_SET(object, child, oldChild) \
-GENC_MTREE_NODE_SET_CHILD(object, child, oldChild)
-
-#define VINBERO_COMMON_OBJECT_ARRAY_FOR_EACH_BEGIN(object, index, value) do { \
-    GENC_TREE_NODE_FOR_EACH_CHILD(object, index) {
-
-#define VINBERO_COMMON_OBJECT_ARRAY_FOR_EACH_END \
-    } \
-} while(0)
-
-#define VINBERO_COMMON_OBJECT_MAP_FOR_EACH_BEGIN(object, key, value) do { \
-    GENC_MTREE_NODE_FOR_EACH_CHILD(object, key) { \
-
-#define VINBERO_COMMON_OBJECT_MAP_FOR_EACH_END \
-    } \
-} while(0)
-*/
-
 #endif
