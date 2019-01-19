@@ -25,9 +25,9 @@ struct vinbero_common_Object {
        double real;
        char* string;
        const char* constring;
-       GENC_TREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
-       GENC_MTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
     };
+    GENC_TREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
+    GENC_MTREE_NODE(struct vinbero_common_Object, struct vinbero_common_Object*);
 };
 
 void vinbero_common_Object_destroy(struct vinbero_common_Object* object);

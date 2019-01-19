@@ -24,23 +24,11 @@ struct vinbero_common_Module {
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
-struct vinbero_common_Module_Id {
-    const char* value;
-};
-
-struct vinbero_common_Module_Ids {
-    GENC_ARRAY_LIST(struct vinbero_common_Module_Id);
-};
-
 int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
-
-int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids);
-
-int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
     const char* modulePath; \
-    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", string, &modulePath, ret); \
+    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", STRING, &modulePath, ret); \
     if(*(ret) < VINBERO_COMMON_STATUS_SUCCESS) \
         *(ret) = VINBERO_COMMON_ERROR_NOT_FOUND; \
     else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \

@@ -65,7 +65,6 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json) {
         break;
     case JSON_OBJECT:
         VINBERO_COMMON_OBJECT_INIT(object, VINBERO_COMMON_OBJECT_TYPE_MAP);
-        VINBERO_COMMON_OBJECT_INIT(object, VINBERO_COMMON_OBJECT_TYPE_MAP);
         json_object_foreach(json, key, value) {
             childObject = vinbero_common_Object_fromJson(value);
             if(childObject == NULL) {
@@ -83,5 +82,3 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json) {
     }
     return object;
 }
-
-
