@@ -9,6 +9,8 @@
 #include <libgenc/genc_ArrayList.h>
 #include "vinbero_common_Config.h"
 #include "vinbero_common_Dlsym.h"
+#include "vinbero_common_Error.h"
+#include "vinbero_common_Status.h"
 
 struct vinbero_common_Module {
     const char* name;
@@ -19,31 +21,20 @@ struct vinbero_common_Module {
     struct fastdl_Handle dlHandle;
     union genc_Generic localModule;
     void* arg; // arg from parentModule
-/*
-    pthread_rwlock_t* rwLock;
-    pthread_key_t* tlModuleKey;
-*/
     GENC_TREE_NODE(struct vinbero_common_Module, struct vinbero_common_Module*);
 };
 
-struct vinbero_common_Module_Ids {
-    GENC_ARRAY_LIST(const char*);
-};
-
-int vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
-
-int vinbero_common_Module_Ids_init(struct vinbero_common_Module_Ids* ids);
-
-int vinbero_common_Module_Ids_destroy(struct vinbero_common_Module_Ids* ids);
+void vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
-    const char* modulePath; \
-    if((modulePath = json_string_value(json_object_get(json_object_get((module)->config->json, (module)->id), "path"))) == NULL) \
-        *(ret) = VINBERO_COMMON_ERROR_INVALID_CONFIG; \
-    else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
+    struct vinbero_common_Object* object; \
+    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", CONSTRING, &object); \
+    if(object == NULL) \
+        *(ret) = VINBERO_COMMON_ERROR_NOT_FOUND; \
+    else if(fastdl_open(&(module)->dlHandle, VINBERO_COMMON_OBJECT_CONSTRING(object), RTLD_LAZY | RTLD_GLOBAL) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
     else \
-        *(ret) = 0; \
+        *(ret) = VINBERO_COMMON_STATUS_SUCCESS; \
 } while(0)
 
 #define VINBERO_COMMON_MODULE_DLSYM(interface, dlHandle, functionName, ret) do { \
