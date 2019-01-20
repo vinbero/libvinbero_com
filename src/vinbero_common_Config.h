@@ -33,22 +33,16 @@ int vinbero_common_Config_destroy(struct vinbero_common_Config* config);
 
 #define VINBERO_COMMON_CONFIG_MGET(config, module, key, type, value) \
 do { \
-    struct vinbero_common_Object* tmp; \
-    GENC_MTREE_NODE_GET_CHILD((config)->object, (module)->id, strlen((module)->id), &tmp); \
-    if(tmp == NULL) { \
-        *(value) = NULL; \
+    GENC_MTREE_NODE_GET_CHILD((config)->object, (module)->id, strlen((module)->id), value); \
+    if(*(value) == NULL) \
 	break; \
-    } \
-    GENC_MTREE_NODE_GET_CHILD(tmp, key, strlen(key), &tmp) \
-    if(tmp == NULL) { \
-        *(value) = NULL; \
+    GENC_MTREE_NODE_GET_CHILD(*(value), key, strlen(key), value) \
+    if(*(value) == NULL) \
 	break; \
-    } \
-    if(VINBERO_COMMON_OBJECT_TYPE(tmp) != VINBERO_COMMON_OBJECT_##type) { \
+    if(VINBERO_COMMON_OBJECT_TYPE(*(value)) != VINBERO_COMMON_OBJECT_TYPE_##type) { \
         *(value) = NULL; \
         break; \
     } \
-    *(value) = tmp; \
 } while(0)
 
 #define VINBERO_COMMON_CONFIG_MGET_REQ(config, module, key, type, value) \

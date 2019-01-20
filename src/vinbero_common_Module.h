@@ -27,11 +27,11 @@ struct vinbero_common_Module {
 void vinbero_common_Module_init(struct vinbero_common_Module* module, const char* name, const char* version, bool childrenRequired);
 
 #define VINBERO_COMMON_MODULE_DLOPEN(module, ret) do { \
-    const char* modulePath; \
-    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", STRING, &modulePath, ret); \
-    if(*(ret) < VINBERO_COMMON_STATUS_SUCCESS) \
+    struct vinbero_common_Object* object; \
+    VINBERO_COMMON_CONFIG_MGET_REQ((module)->config, module, "path", CONSTRING, &object); \
+    if(object == NULL) \
         *(ret) = VINBERO_COMMON_ERROR_NOT_FOUND; \
-    else if(fastdl_open(&(module)->dlHandle, modulePath, RTLD_LAZY | RTLD_GLOBAL) == -1) \
+    else if(fastdl_open(&(module)->dlHandle, VINBERO_COMMON_OBJECT_CONSTRING(object), RTLD_LAZY | RTLD_GLOBAL) == -1) \
         *(ret) = VINBERO_COMMON_ERROR_DLOPEN; \
     else \
         *(ret) = VINBERO_COMMON_STATUS_SUCCESS; \
