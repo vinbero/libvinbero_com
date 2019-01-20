@@ -14,6 +14,7 @@ else()
 endif()
 
 execute_process(COMMAND git shortlog --all -nse HEAD OUTPUT_FILE "${CMAKE_SOURCE_DIR}/AUTHORS")
+add_custom_target(authors ALL git shortlog --all -nse HEAD > "${CMAKE_SOURCE_DIR}/AUTHORS")
 
 add_subdirectory(src)
 enable_testing()
