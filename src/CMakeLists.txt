@@ -8,6 +8,8 @@ list(APPEND vinbero_common_public_headers "vinbero_common_Error.h")
 list(APPEND vinbero_common_public_headers "vinbero_common_Status.h")
 list(APPEND vinbero_common_public_headers "vinbero_common_Dlsym.h")
 list(APPEND vinbero_common_public_headers "vinbero_common_Call.h")
+list(APPEND vinbero_common_public_headers "vinbero_common_Object.h")
+
 file(GLOB interfaces "vinbero_interface_*.h")
 
 install(FILES ${interfaces} DESTINATION include/vinbero)

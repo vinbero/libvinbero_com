@@ -39,18 +39,17 @@ int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const c
 }
 
 bool vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
-    struct vinbero_common_Object* moduleConfig;
-    struct vinbero_common_Object* innerConfig;
-    struct vinbero_common_Object* next;
+    struct vinbero_common_Object* object;
+    struct vinbero_common_Object* object2;
 
-    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &moduleConfig);
-    if(moduleConfig == NULL || VINBERO_COMMON_OBJECT_TYPE(moduleConfig) != VINBERO_COMMON_OBJECT_TYPE_MAP)
+    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object);
+    if(object == NULL || VINBERO_COMMON_OBJECT_TYPE(object) != VINBERO_COMMON_OBJECT_TYPE_MAP)
         return false;
-    GENC_MTREE_NODE_GET_CHILD(moduleConfig, "config", sizeof("config") - 1, &innerConfig);
-    if(innerConfig == NULL || VINBERO_COMMON_OBJECT_TYPE(innerConfig) != VINBERO_COMMON_OBJECT_TYPE_MAP)
+    GENC_MTREE_NODE_GET_CHILD(object, "config", sizeof("config") - 1, &object2);
+    if(object2 == NULL || VINBERO_COMMON_OBJECT_TYPE(object2) != VINBERO_COMMON_OBJECT_TYPE_MAP)
         return false;
-    GENC_MTREE_NODE_GET_CHILD(moduleConfig, "next", sizeof("next") - 1, &next);
-    if(next == NULL || VINBERO_COMMON_OBJECT_TYPE(next) != VINBERO_COMMON_OBJECT_TYPE_ARRAY)
+    GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object2);
+    if(object2 == NULL || VINBERO_COMMON_OBJECT_TYPE(object2) != VINBERO_COMMON_OBJECT_TYPE_ARRAY)
         return false;
     return true;
 }
@@ -186,6 +185,8 @@ size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* c
 struct vinbero_common_Object* vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId) {
     struct vinbero_common_Object* object;
     GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object)
+    if(object == NULL)
+        return NULL;
     GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object)
     return object;
 }
