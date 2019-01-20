@@ -38,20 +38,22 @@ int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const c
     return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
-bool vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
+int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId) {
     struct vinbero_common_Object* object;
     struct vinbero_common_Object* object2;
 
     GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object);
-    if(object == NULL || VINBERO_COMMON_OBJECT_TYPE(object) != VINBERO_COMMON_OBJECT_TYPE_MAP)
-        return false;
+    if(object == NULL)
+        return VINBERO_COMMON_ERROR_NOT_FOUND;
+    if(VINBERO_COMMON_OBJECT_TYPE(object) != VINBERO_COMMON_OBJECT_TYPE_MAP)
+        return VINBERO_COMMON_ERROR_INVALID_CONFIG;
     GENC_MTREE_NODE_GET_CHILD(object, "config", sizeof("config") - 1, &object2);
     if(object2 == NULL || VINBERO_COMMON_OBJECT_TYPE(object2) != VINBERO_COMMON_OBJECT_TYPE_MAP)
-        return false;
+        return VINBERO_COMMON_ERROR_INVALID_CONFIG;
     GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object2);
     if(object2 == NULL || VINBERO_COMMON_OBJECT_TYPE(object2) != VINBERO_COMMON_OBJECT_TYPE_ARRAY)
-        return false;
-    return true;
+        return VINBERO_COMMON_ERROR_INVALID_CONFIG;
+    return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
 #define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
@@ -182,13 +184,18 @@ size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* c
     return GENC_TREE_NODE_CHILD_COUNT(object);
 }
 
-struct vinbero_common_Object* vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId) {
-    struct vinbero_common_Object* object;
-    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object)
-    if(object == NULL)
-        return NULL;
-    GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object)
-    return object;
+int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId, struct vinbero_common_Object** ids) {
+    struct vinbero_common_Object* tmp;
+    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &tmp)
+    if(tmp == NULL)
+        return VINBERO_COMMON_ERROR_NOT_FOUND;
+    printf("module config found\n");
+    GENC_MTREE_NODE_GET_CHILD(tmp, "next", sizeof("next") - 1, ids);
+
+    if(*ids == NULL)
+        return VINBERO_COMMON_ERROR_NOT_FOUND;
+    printf("next config found\n");
+    return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
 int vinbero_common_Config_init(struct vinbero_common_Config* config) {

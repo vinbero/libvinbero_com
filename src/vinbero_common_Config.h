@@ -14,7 +14,7 @@ struct vinbero_common_Config {
 
 int vinbero_common_Config_fromString(struct vinbero_common_Config* config, const char* input);
 int vinbero_common_Config_fromFile(struct vinbero_common_Config* config, const char* path);
-bool vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId);
+int vinbero_common_Config_check(struct vinbero_common_Config* config, const char* moduleId);
 
 void vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* key, int* out, int defaultValue);
 void vinbero_common_Config_getConstring(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* key, const char** out, const char* defaultValue);
@@ -27,7 +27,7 @@ bool vinbero_common_Config_getRequiredBool(struct vinbero_common_Config* config,
 
 int vinbero_common_Config_getModulePath(struct vinbero_common_Config* config, const char* moduleId, const char** modulePath);
 size_t vinbero_common_Config_getChildModuleCount(struct vinbero_common_Config* config, const char* moduleId);
-struct vinbero_common_Object* vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId);
+int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config, const char* moduleId, struct vinbero_common_Object** ids);
 int vinbero_common_Config_init(struct vinbero_common_Config* config);
 int vinbero_common_Config_destroy(struct vinbero_common_Config* config);
 

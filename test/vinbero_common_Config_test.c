@@ -30,18 +30,18 @@ static void test_Config_check(void** state) {
 
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "no_next.json"), VINBERO_COMMON_STATUS_SUCCESS);
-    assert_int_equal(vinbero_common_Config_check(&config, "core"), false);
+    assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_ERROR_INVALID_CONFIG);
 
     vinbero_common_Config_destroy(&config);
 
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "no_config.json"), VINBERO_COMMON_STATUS_SUCCESS);
-    assert_int_equal(vinbero_common_Config_check(&config, "core"), false);
+    assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_ERROR_INVALID_CONFIG);
     vinbero_common_Config_destroy(&config);
 
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "no_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
-    assert_int_equal(vinbero_common_Config_check(&config, "core"), true);
+    assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_STATUS_SUCCESS);
     vinbero_common_Config_destroy(&config);
 }
 
@@ -50,7 +50,7 @@ static void test_Config_getChildModuleCount(void** state) {
 
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "with_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
-    assert_int_equal(vinbero_common_Config_check(&config, "core"), true);
+    assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_STATUS_SUCCESS);
     assert_int_equal(vinbero_common_Config_getChildModuleCount(&config, "core"), 3);
     vinbero_common_Config_destroy(&config);
 }
@@ -62,8 +62,8 @@ static void test_Config_getChildModuleIds(void** state) {
 
     vinbero_common_Config_init(&config);
     assert_int_equal(vinbero_common_Config_fromFile(&config, "with_children.json"), VINBERO_COMMON_STATUS_SUCCESS);
-    assert_int_equal(vinbero_common_Config_check(&config, "core"), true);
-    ids = vinbero_common_Config_getChildModuleIds(&config, "core");
+    assert_int_equal(vinbero_common_Config_check(&config, "core"), VINBERO_COMMON_STATUS_SUCCESS);
+    assert_int_equal(vinbero_common_Config_getChildModuleIds(&config, "core", &ids), VINBERO_COMMON_STATUS_SUCCESS);
     assert_int_equal(GENC_TREE_NODE_CHILD_COUNT(ids), 3);
 
     id = GENC_TREE_NODE_GET_CHILD(ids, 0);
