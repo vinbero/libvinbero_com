@@ -31,8 +31,40 @@ int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config
 int vinbero_common_Config_init(struct vinbero_common_Config* config);
 int vinbero_common_Config_destroy(struct vinbero_common_Config* config);
 
-#define VINBERO_COMMON_CONFIG_MGET(config, module, key, type, value) \
-do { \
+#define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
+    bool valueFound = false; \
+    struct vinbero_common_Object* tmp; \
+    for(struct vinbero_common_Module* currentModule = module; \
+        GENC_TREE_NODE_PARENT(currentModule) != NULL; \
+        currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
+        GENC_MTREE_NODE_GET_CHILD((config)->object, currentModule->id, strlen(currentModule->id), &tmp); \
+        if(tmp == NULL) \
+            continue; \
+        GENC_MTREE_NODE_GET_CHILD(tmp, "config", sizeof("config") - 1, &tmp); \
+        if(tmp == NULL) \
+            continue; \
+        GENC_MTREE_NODE_GET_CHILD(tmp, key, strlen(key), &tmp); \
+        if(tmp == NULL) \
+            continue; \
+        if(VINBERO_COMMON_OBJECT_TYPE(tmp) != VINBERO_COMMON_OBJECT_TYPE_##type) \
+            break; \
+        *(value) = tmp; \
+        valueFound = true; \
+        break; \
+    } \
+    if(valueFound == false) { \
+        *(value) = NULL; \
+        VINBERO_COMMON_LOG_ERROR("Config value %s not found at module %s", key, (module)->id); \
+    } \
+} while(0)
+
+#define VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, type, value) do { \
+    VINBERO_MODULE_CONFIG_GET(config, module, key, type, value); \
+    if(*(value) == NULL) \
+        VINBERO_COMMON_LOG_ERROR("Config value %s not found at module %s", key, (module)->id); \
+} while(0)
+
+#define VINBERO_COMMON_CONFIG_MGET(config, module, key, type, value) do { \
     GENC_MTREE_NODE_GET_CHILD((config)->object, (module)->id, strlen((module)->id), value); \
     if(*(value) == NULL) \
 	break; \

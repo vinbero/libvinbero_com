@@ -56,39 +56,6 @@ int vinbero_common_Config_check(struct vinbero_common_Config* config, const char
     return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
-#define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
-    bool valueFound = false; \
-    struct vinbero_common_Object* tmp; \
-    for(struct vinbero_common_Module* currentModule = module; \
-        GENC_TREE_NODE_PARENT(currentModule) != NULL; \
-        currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
-        GENC_MTREE_NODE_GET_CHILD((config)->object, currentModule->id, strlen(currentModule->id), &tmp); \
-        if(tmp == NULL) \
-            continue; \
-        GENC_MTREE_NODE_GET_CHILD(tmp, "config", sizeof("config") - 1, &tmp); \
-        if(tmp == NULL) \
-            continue; \
-        GENC_MTREE_NODE_GET_CHILD(tmp, key, strlen(key), &tmp); \
-        if(tmp == NULL) \
-            continue; \
-        if(VINBERO_COMMON_OBJECT_TYPE(tmp) != VINBERO_COMMON_OBJECT_TYPE_##type) \
-            break; \
-        *(value) = tmp; \
-        valueFound = true; \
-        break; \
-    } \
-    if(valueFound == false) { \
-        *(value) = NULL; \
-        VINBERO_COMMON_LOG_ERROR("Config value %s not found at module %s", key, (module)->id); \
-    } \
-} while(0)
-
-#define VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, type, value) do { \
-    VINBERO_MODULE_CONFIG_GET(config, module, key, type, value); \
-    if(*(value) == NULL) \
-        VINBERO_COMMON_LOG_ERROR("Config value %s not found at module %s", key, (module)->id); \
-} while(0)
-
 void vinbero_common_Config_getInt(struct vinbero_common_Config* config, struct vinbero_common_Module* module, const char* key, int* value, int defaultValue) {
     struct vinbero_common_Object* object;
     VINBERO_MODULE_CONFIG_GET(config, module, key, INTEGER, &object);
@@ -189,12 +156,9 @@ int vinbero_common_Config_getChildModuleIds(struct vinbero_common_Config* config
     GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &tmp)
     if(tmp == NULL)
         return VINBERO_COMMON_ERROR_NOT_FOUND;
-    printf("module config found\n");
     GENC_MTREE_NODE_GET_CHILD(tmp, "next", sizeof("next") - 1, ids);
-
     if(*ids == NULL)
         return VINBERO_COMMON_ERROR_NOT_FOUND;
-    printf("next config found\n");
     return VINBERO_COMMON_STATUS_SUCCESS;
 }
 
