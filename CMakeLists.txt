@@ -13,6 +13,7 @@ else()
   set(CMAKE_C_STANDARD 11)
 endif()
 
+execute_process(COMMAND git remote set-branches origin '*')
 execute_process(COMMAND git fetch)
 execute_process(COMMAND git shortlog -nse --no-merges origin/master OUTPUT_FILE "${CMAKE_SOURCE_DIR}/AUTHORS")
 add_custom_target(authors ALL git shortlog -nse --no-merges origin/master > "${CMAKE_SOURCE_DIR}/AUTHORS")
