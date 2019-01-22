@@ -14,7 +14,7 @@ else()
 endif()
 
 execute_process(COMMAND sh "-c" "git branch -a | grep remotes/origin/master | wc -l" ERROR_QUIET OUTPUT_VARIABLE master_branch_exists)
-if(master_branch_exists EQUAL 1)
+if(${master_branch_exists} EQUAL 1)
   message("Branch origin/master exists, enabling automatic AUTHORS generation")
   execute_process(COMMAND git shortlog -nse --no-merges origin/master OUTPUT_FILE "${CMAKE_SOURCE_DIR}/AUTHORS")
   add_custom_target(vinbero_common_authors ALL git shortlog -nse --no-merges origin/master > "${CMAKE_SOURCE_DIR}/AUTHORS")
