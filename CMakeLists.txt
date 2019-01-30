@@ -13,6 +13,7 @@ else()
   set(CMAKE_C_STANDARD 11)
 endif()
 
+set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
 execute_process(COMMAND sh "-c" "git branch -a | grep remotes/origin/master | wc -l" ERROR_QUIET OUTPUT_VARIABLE master_branch_exists)
 if(${master_branch_exists} EQUAL 1)
   message("Branch origin/master exists, enabling automatic AUTHORS generation")
