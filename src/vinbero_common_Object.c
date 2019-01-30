@@ -16,6 +16,8 @@ void vinbero_common_Object_destroy(struct vinbero_common_Object* object) {
             vinbero_common_Object_destroy(childObject);
         GENC_MTREE_NODE_FOR_EACH_CHILD_END;
         break;
+    default:
+        break;
     }
     free(object);
 }
@@ -27,7 +29,6 @@ struct vinbero_common_Object* vinbero_common_Object_fromJson(json_t* json) {
     size_t index;
     const char* key;
     json_t* value;
-    enum vinbero_common_Object_Type type;
     switch(json_typeof(json)) {
     case JSON_NULL:
         VINBERO_COMMON_OBJECT_INIT(object, VINBERO_COMMON_OBJECT_TYPE_NULL);
