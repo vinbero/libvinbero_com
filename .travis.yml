@@ -73,3 +73,5 @@ before_script:
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
 
 script: make && ctest -V && make gcov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
