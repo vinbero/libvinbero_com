@@ -10,9 +10,6 @@ list(APPEND vinbero_common_public_headers "vinbero_common_Dlsym.h")
 list(APPEND vinbero_common_public_headers "vinbero_common_Call.h")
 list(APPEND vinbero_common_public_headers "vinbero_common_Object.h")
 
-file(GLOB interfaces "vinbero_interface_*.h")
-
-install(FILES ${interfaces} DESTINATION include/vinbero)
 set_target_properties(vinbero_common PROPERTIES VERSION ${vinbero_common_version}
                                                 SOVERSION ${vinbero_common_soversion}
                                                 PUBLIC_HEADER "${vinbero_common_public_headers}")
