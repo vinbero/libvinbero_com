@@ -27,9 +27,9 @@ struct vinbero_com_Module {
 
 void vinbero_com_Module_init(struct vinbero_com_Module* module, const char* name, const char* version, bool childrenRequired);
 
-#define VINBERO_COM_MODULE_DLSYM(interface, dlHandle, functionName, ret) do { \
-    (interface)->functionName = NULL; \
-    VINBERO_COM_DLSYM(dlHandle, #functionName, (void**)&(interface)->functionName, ret); \
+#define VINBERO_COM_MODULE_DLSYM(iface, dlHandle, functionName, ret) do { \
+    (iface)->functionName = NULL; \
+    VINBERO_COM_DLSYM(dlHandle, #functionName, (void**)&(iface)->functionName, ret); \
 } while(0)
 
 #endif
