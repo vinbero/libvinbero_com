@@ -35,9 +35,9 @@ type vinbero_com_Module_Metadata_##name() { \
     return value; \
 }
 
-#define VINBERO_COM_MODULE_META_GET(dlHandle, name, type, value, ret) do { \
+#define VINBERO_COM_MODULE_META_GET(module, name, type, value, ret) do { \
   type (*vinbero_com_Module_Metadata_##name)() meta; \
-  VINBERO_COM_DLSYM(dlHandle, "vinbero_com_Module_Metadata_"#name, ret) \
+  VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"#name, ret) \
   if(ret < VINBERO_COM_STATUS_SUCCESS) \
     break; \
   *(value) = meta(); \
@@ -47,10 +47,10 @@ type vinbero_com_Module_Metadata_##name() { \
 VINBERO_COM_MODULE_META(NAME, const char*, name)
 
 #define VINBERO_COM_MODULE_META_VERSION(major, minor, patch) \
-VINBERO_COM_MODULE_META(VERSION, const char*, major"."minor"."patch) \
-VINBERO_COM_MODULE_META(VERSION_MAJOR, const char*, major) \
-VINBERO_COM_MODULE_META(VERSION_MINOR, const char*, minor) \
-VINBERO_COM_MODULE_META(VERSION_PATCH, const char*, minor)
+VINBERO_COM_MODULE_META(VERSION, const char*, #major"."#minor"."#patch) \
+VINBERO_COM_MODULE_META(VERSION_MAJOR, int, major) \
+VINBERO_COM_MODULE_META(VERSION_MINOR, int, minor) \
+VINBERO_COM_MODULE_META(VERSION_PATCH, int, patch)
 
 #define VINBERO_COM_MODULE_META_IN_IFACES(ifaces) \
 VINBERO_COM_MODULE_META(IN_IFACES, const char*, ifaces)
