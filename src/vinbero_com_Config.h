@@ -32,6 +32,7 @@ int vinbero_com_Config_init(struct vinbero_com_Config* config);
 int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
 
 #define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
+    *(value) = NULL; \
     for(struct vinbero_com_Module* currentModule = module; \
         GENC_TREE_NODE_PARENT(currentModule) != NULL; \
         currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
