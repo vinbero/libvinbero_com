@@ -35,9 +35,9 @@ type vinbero_com_Module_Metadata_##name() { \
     return value; \
 }
 
-#define VINBERO_COM_MODULE_META_GET(module, name, type, value, ret) do { \
-  type (*vinbero_com_Module_Metadata_##name)() meta; \
-  VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"#name, ret) \
+#define VINBERO_COM_MODULE_META_GET(module, name, value, ret) do { \
+  typeof(*(value)) (*meta)(); \
+  VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"name, (void**)&meta, ret); \
   if(ret < VINBERO_COM_STATUS_SUCCESS) \
     break; \
   *(value) = meta(); \
