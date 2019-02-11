@@ -1,4 +1,4 @@
-add_library(vinbero_com SHARED vinbero_com_Log.c vinbero_com_Config.c vinbero_com_Module.c vinbero_com_Object.c)
+add_library(vinbero_com SHARED vinbero_com_Log.c vinbero_com_Config.c vinbero_com_Object.c)
 list(APPEND vinbero_com_public_headers "vinbero_com_Module.h")
 list(APPEND vinbero_com_public_headers "vinbero_com_TlModule.h")
 list(APPEND vinbero_com_public_headers "vinbero_com_ClModule.h")

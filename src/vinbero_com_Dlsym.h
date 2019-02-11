@@ -5,8 +5,8 @@
 #include "vinbero_com_Error.h"
 #include "vinbero_com_Status.h"
 
-#define VINBERO_COM_DLSYM(dlHandle, functionName, out, ret) do { \
-    FASTDL_SYM(dlHandle, functionName, out, ret); \
+#define VINBERO_COM_DLSYM(dlHandle, funcName, out, ret) do { \
+    FASTDL_SYM(dlHandle, funcName, out, ret); \
     if(*(ret) == -1) \
         *(ret) = VINBERO_COM_ERROR_DLSYM; \
     else \
