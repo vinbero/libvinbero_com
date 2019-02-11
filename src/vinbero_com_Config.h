@@ -58,6 +58,7 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
 } while(0)
 
 #define VINBERO_COM_CONFIG_MGET(config, module, key, type, value) do { \
+    *(value) = NULL; \
     GENC_MTREE_NODE_GET_CHILD((config)->object, (module)->id, strlen((module)->id), value); \
     if(*(value) == NULL) \
         break; \
