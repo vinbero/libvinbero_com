@@ -46,11 +46,15 @@ type vinbero_com_Module_Metadata_##name() { \
 #define VINBERO_COM_MODULE_META_NAME(name) \
 VINBERO_COM_MODULE_META(NAME, const char*, name)
 
+#define VINBERO_LOCAL_STR(x) #x
+
 #define VINBERO_COM_MODULE_META_VERSION(major, minor, patch) \
-VINBERO_COM_MODULE_META(VERSION, const char*, #major"."#minor"."#patch) \
+VINBERO_COM_MODULE_META(VERSION, const char*, VINBERO_LOCAL_STR(major) "." VINBERO_LOCAL_STR(minor) "." VINBERO_LOCAL_STR(patch)) \
 VINBERO_COM_MODULE_META(VERSION_MAJOR, int, major) \
 VINBERO_COM_MODULE_META(VERSION_MINOR, int, minor) \
 VINBERO_COM_MODULE_META(VERSION_PATCH, int, patch)
+
+#undef VINBERO_LOCAL_STR
 
 #define VINBERO_COM_MODULE_META_IN_IFACES(ifaces) \
 VINBERO_COM_MODULE_META(IN_IFACES, const char*, ifaces)
