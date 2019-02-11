@@ -33,8 +33,19 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
 
 #define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
     *(value) = NULL; \
+    GENC_MTREE_NODE_GET_CHILD((config)->object, (module)->id, strlen((module)->id), value); \
+    if(*(value) != NULL) { \
+        GENC_MTREE_NODE_GET_CHILD(*(value), "config", sizeof("config") - 1, value); \
+        if(*(value) != NULL) { \
+            GENC_MTREE_NODE_GET_CHILD(*(value), key, strlen(key), value); \
+            if(*(value) != NULL) { \
+                if(VINBERO_COM_OBJECT_TYPE(*(value)) != VINBERO_COM_OBJECT_TYPE_##type) \
+                    *(value) = NULL; \
+            } \
+        } \
+    } \
     for(struct vinbero_com_Module* currentModule = module; \
-        GENC_TREE_NODE_PARENT(currentModule) != NULL; \
+        *(value) == NULL && GENC_TREE_NODE_PARENT(currentModule) != NULL; \
         currentModule = GENC_TREE_NODE_PARENT(currentModule)) { \
         GENC_MTREE_NODE_GET_CHILD((config)->object, currentModule->id, strlen(currentModule->id), value); \
         if(*(value) == NULL) \
