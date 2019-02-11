@@ -20,7 +20,7 @@ before_install:
   - cd ../
 
   - pwd
-  - git clone https://github.com/vinbero/libgenc
+  - git clone https://github.com/gonapps-org/libgenc
   - cd libgenc
   - mkdir build
   - cd build
