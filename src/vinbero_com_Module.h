@@ -36,25 +36,22 @@ type vinbero_com_Module_Metadata_##name() { \
 }
 
 #define VINBERO_COM_MODULE_META_GET(module, name, value, ret) do { \
-  typeof(*(value)) (*meta)(); \
-  VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"name, (void**)&meta, ret); \
-  if(ret < VINBERO_COM_STATUS_SUCCESS) \
-    break; \
-  *(value) = meta(); \
+    typeof(*(value)) (*meta)(); \
+    VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"name, (void**)&meta, ret); \
+    if(ret < VINBERO_COM_STATUS_SUCCESS) \
+        break; \
+    if(meta != NULL) \
+        *(value) = meta(); \
 } while(0)
 
 #define VINBERO_COM_MODULE_META_NAME(name) \
 VINBERO_COM_MODULE_META(NAME, const char*, name)
 
-#define VINBERO_LOCAL_STR(x) #x
-
 #define VINBERO_COM_MODULE_META_VERSION(major, minor, patch) \
-VINBERO_COM_MODULE_META(VERSION, const char*, VINBERO_LOCAL_STR(major) "." VINBERO_LOCAL_STR(minor) "." VINBERO_LOCAL_STR(patch)) \
+VINBERO_COM_MODULE_META(VERSION, const char*, #major"."#minor"."#patch) \
 VINBERO_COM_MODULE_META(VERSION_MAJOR, int, major) \
 VINBERO_COM_MODULE_META(VERSION_MINOR, int, minor) \
 VINBERO_COM_MODULE_META(VERSION_PATCH, int, patch)
-
-#undef VINBERO_LOCAL_STR
 
 #define VINBERO_COM_MODULE_META_IN_IFACES(ifaces) \
 VINBERO_COM_MODULE_META(IN_IFACES, const char*, ifaces)
