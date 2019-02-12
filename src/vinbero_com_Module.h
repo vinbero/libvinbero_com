@@ -13,9 +13,6 @@
 #include "vinbero_com_Status.h"
 
 struct vinbero_com_Module {
-    const char* name;
-    const char* version;
-    bool childrenRequired;
     struct vinbero_com_Config* config;
     const char* id;
     const char* path;
