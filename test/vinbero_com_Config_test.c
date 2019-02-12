@@ -64,15 +64,15 @@ static void test_Config_getChildModuleIds(void** state) {
     assert_int_equal(vinbero_com_Config_fromFile(&config, "with_children.json"), VINBERO_COM_STATUS_SUCCESS);
     assert_int_equal(vinbero_com_Config_check(&config, "core"), VINBERO_COM_STATUS_SUCCESS);
     assert_int_equal(vinbero_com_Config_getChildModuleIds(&config, "core", &ids), VINBERO_COM_STATUS_SUCCESS);
-    assert_int_equal(GENC_TREE_NODE_CHILD_COUNT(ids), 3);
+    assert_int_equal(GENC_TREE_NODE_SIZE(ids), 3);
 
-    id = GENC_TREE_NODE_GET_CHILD(ids, 0);
+    id = GENC_TREE_NODE_RAW_GET(ids, 0);
     assert_string_equal(VINBERO_COM_OBJECT_CONSTRING(id), "vinbero_dummy1");
 
-    id = GENC_TREE_NODE_GET_CHILD(ids, 1);
+    id = GENC_TREE_NODE_RAW_GET(ids, 1);
     assert_string_equal(VINBERO_COM_OBJECT_CONSTRING(id), "vinbero_dummy2");
     
-    id = GENC_TREE_NODE_GET_CHILD(ids, 2);
+    id = GENC_TREE_NODE_RAW_GET(ids, 2);
     assert_string_equal(VINBERO_COM_OBJECT_CONSTRING(id), "vinbero_dummy3");
 }
 

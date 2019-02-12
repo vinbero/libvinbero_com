@@ -42,15 +42,15 @@ int vinbero_com_Config_check(struct vinbero_com_Config* config, const char* modu
     struct vinbero_com_Object* object;
     struct vinbero_com_Object* object2;
 
-    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object);
+    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &object);
     if(object == NULL)
         return VINBERO_COM_ERROR_NOT_FOUND;
     if(VINBERO_COM_OBJECT_TYPE(object) != VINBERO_COM_OBJECT_TYPE_MAP)
         return VINBERO_COM_ERROR_INVALID_CONFIG;
-    GENC_MTREE_NODE_GET_CHILD(object, "config", sizeof("config") - 1, &object2);
+    GENC_MTREE_NODE_GET(object, "config", sizeof("config") - 1, &object2);
     if(object2 == NULL || VINBERO_COM_OBJECT_TYPE(object2) != VINBERO_COM_OBJECT_TYPE_MAP)
         return VINBERO_COM_ERROR_INVALID_CONFIG;
-    GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object2);
+    GENC_MTREE_NODE_GET(object, "next", sizeof("next") - 1, &object2);
     if(object2 == NULL || VINBERO_COM_OBJECT_TYPE(object2) != VINBERO_COM_OBJECT_TYPE_ARRAY)
         return VINBERO_COM_ERROR_INVALID_CONFIG;
     return VINBERO_COM_STATUS_SUCCESS;
@@ -146,17 +146,17 @@ bool vinbero_com_Config_getRequiredBool(struct vinbero_com_Config* config, struc
 
 size_t vinbero_com_Config_getChildModuleCount(struct vinbero_com_Config* config, const char* moduleId) {
     struct vinbero_com_Object* object;
-    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &object)
-    GENC_MTREE_NODE_GET_CHILD(object, "next", sizeof("next") - 1, &object);
-    return GENC_TREE_NODE_CHILD_COUNT(object);
+    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &object)
+    GENC_MTREE_NODE_GET(object, "next", sizeof("next") - 1, &object);
+    return GENC_TREE_NODE_SIZE(object);
 }
 
 int vinbero_com_Config_getChildModuleIds(struct vinbero_com_Config* config, const char* moduleId, struct vinbero_com_Object** ids) {
     struct vinbero_com_Object* tmp;
-    GENC_MTREE_NODE_GET_CHILD(config->object, moduleId, strlen(moduleId), &tmp)
+    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &tmp)
     if(tmp == NULL)
         return VINBERO_COM_ERROR_NOT_FOUND;
-    GENC_MTREE_NODE_GET_CHILD(tmp, "next", sizeof("next") - 1, ids);
+    GENC_MTREE_NODE_GET(tmp, "next", sizeof("next") - 1, ids);
     if(*ids == NULL)
         return VINBERO_COM_ERROR_NOT_FOUND;
     return VINBERO_COM_STATUS_SUCCESS;

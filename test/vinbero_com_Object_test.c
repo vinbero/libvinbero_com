@@ -19,8 +19,8 @@ static void vinbero_com_Object_test(void** state) {
     VINBERO_COM_OBJECT_INTEGER(&object2) = 123;
     GENC_MTREE_NODE_KEY(&object2) = "HELLO";
     GENC_MTREE_NODE_KEY_LENGTH(&object2) = sizeof("HELLO") - 1;
-    GENC_MTREE_NODE_SET_CHILD(&object, &object2, &old);
-    GENC_MTREE_NODE_GET_CHILD(&object, "HELLO", sizeof("HELLO") - 1, &old);
+    GENC_MTREE_NODE_SET(&object, &object2, &old);
+    GENC_MTREE_NODE_GET(&object, "HELLO", sizeof("HELLO") - 1, &old);
     printf("%d\n", VINBERO_COM_OBJECT_INTEGER(old));
 
     struct vinbero_com_Config config;

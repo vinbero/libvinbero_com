@@ -7,14 +7,14 @@ void vinbero_com_Object_destroy(struct vinbero_com_Object* object) {
     struct vinbero_com_Object* childObject;
     switch(VINBERO_COM_OBJECT_TYPE(object)) {
     case VINBERO_COM_OBJECT_TYPE_ARRAY:
-        GENC_TREE_NODE_FOR_EACH_CHILD(object, index) {
-            vinbero_com_Object_destroy(GENC_TREE_NODE_GET_CHILD(object, index));
+        GENC_TREE_NODE_FOR_EACH(object, index) {
+            vinbero_com_Object_destroy(GENC_TREE_NODE_RAW_GET(object, index));
         }
         break;
     case VINBERO_COM_OBJECT_TYPE_MAP:
-        GENC_MTREE_NODE_FOR_EACH_CHILD_BEGIN(object, &childObject)
+        GENC_MTREE_NODE_FOR_EACH_BEGIN(object, &childObject)
             vinbero_com_Object_destroy(childObject);
-        GENC_MTREE_NODE_FOR_EACH_CHILD_END;
+        GENC_MTREE_NODE_FOR_EACH_END;
         break;
     default:
         break;
@@ -61,7 +61,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
                 vinbero_com_Object_destroy(object);
                 object = NULL;
             }
-            GENC_TREE_NODE_ADD_CHILD(object, childObject);
+            GENC_TREE_NODE_ADD(object, childObject);
         }
         break;
     case JSON_OBJECT:
@@ -74,7 +74,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
             }
             GENC_MTREE_NODE_KEY(childObject) = key;
             GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
-            GENC_MTREE_NODE_SET_CHILD(object, childObject, &oldObject);
+            GENC_MTREE_NODE_SET(object, childObject, &oldObject);
         }
         break;
     default:
