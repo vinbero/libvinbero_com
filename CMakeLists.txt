@@ -18,8 +18,8 @@ if(${BUILD_WITH_COVERAGE})
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-set(vinbero_com_version "0.3.0")
-set(vinbero_com_soversion "0.3")
+set(vinbero_com_version "0.4.0")
+set(vinbero_com_soversion "0.4")
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "CMAKE_BUILD_TYPE" FORCE)
