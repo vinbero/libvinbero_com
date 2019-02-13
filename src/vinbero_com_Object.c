@@ -7,14 +7,14 @@ void vinbero_com_Object_destroy(struct vinbero_com_Object* object) {
     struct vinbero_com_Object* childObject;
     switch(VINBERO_COM_OBJECT_TYPE(object)) {
     case VINBERO_COM_OBJECT_TYPE_ARRAY:
-        GENC_TREE_NODE_FOR_EACH(object, index) {
+        GENC_TREE_NODE_FOREACH(object, index) {
             vinbero_com_Object_destroy(GENC_TREE_NODE_RAW_GET(object, index));
         }
         break;
     case VINBERO_COM_OBJECT_TYPE_MAP:
-        GENC_MTREE_NODE_FOR_EACH_BEGIN(object, &childObject)
+        GENC_MTREE_NODE_FOREACH_BEGIN(object, &childObject)
             vinbero_com_Object_destroy(childObject);
-        GENC_MTREE_NODE_FOR_EACH_END;
+        GENC_MTREE_NODE_FOREACH_END;
         break;
     default:
         break;

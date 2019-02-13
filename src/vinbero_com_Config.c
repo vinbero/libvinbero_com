@@ -12,11 +12,11 @@ int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char*
     json_error_t configError;
     if(config->object == NULL) {
         if((config->json = json_loads(input, 0, &configError)) == NULL) {
-            VINBERO_COM_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
+            VINBERO_COM_LOG_ERROR("JSON PARSING ERROR %s: %d: %s", configError.source, configError.line, configError.text);
             return VINBERO_COM_ERROR_INVALID_CONFIG;
         }
     } else {
-        VINBERO_COM_LOG_ERROR("Config is already allocated");
+        VINBERO_COM_LOG_ERROR("CONFIG IS ALREADY ALLOCATED");
         return VINBERO_COM_ERROR_ALREADY;
     }
     config->object = vinbero_com_Object_fromJson(config->json);
@@ -31,7 +31,7 @@ int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* p
             return VINBERO_COM_ERROR_INVALID_CONFIG;
         }
     } else {
-        VINBERO_COM_LOG_ERROR("Config is already allocated");
+        VINBERO_COM_LOG_ERROR("CONFIG IS ALREADY ALLOCATED");
         return VINBERO_COM_ERROR_ALREADY;
     }
     config->object = vinbero_com_Object_fromJson(config->json);
@@ -63,7 +63,7 @@ void vinbero_com_Config_getInt(struct vinbero_com_Config* config, struct vinbero
         *value = defaultValue;
     else
         *value = VINBERO_COM_OBJECT_INTEGER(object);
-    VINBERO_COM_LOG_DEBUG("Config option %s: %d", key, *value);
+    VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %d", key, *value);
 }
 
 void vinbero_com_Config_getConstring(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, const char** value, const char* defaultValue) {
@@ -73,7 +73,7 @@ void vinbero_com_Config_getConstring(struct vinbero_com_Config* config, struct v
         *value = defaultValue;
     else
         *value = VINBERO_COM_OBJECT_CONSTRING(object);
-    VINBERO_COM_LOG_DEBUG("Config option %s: %s", key, *value);
+    VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %s", key, *value);
 }
 
 void vinbero_com_Config_getDouble(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, double* value, double defaultValue) {
@@ -83,7 +83,7 @@ void vinbero_com_Config_getDouble(struct vinbero_com_Config* config, struct vinb
         *value = defaultValue;
     else
         *value = VINBERO_COM_OBJECT_REAL(object);
-    VINBERO_COM_LOG_DEBUG("Config option %s: %f", key, *value);
+    VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %f", key, *value);
 }
 
 void vinbero_com_Config_getBool(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, bool* value, bool defaultValue) {
@@ -93,7 +93,7 @@ void vinbero_com_Config_getBool(struct vinbero_com_Config* config, struct vinber
         *value = defaultValue;
     else
         *value = VINBERO_COM_OBJECT_BOOLEAN(object);
-    VINBERO_COM_LOG_DEBUG("Config option %s: %s", key, *value == true ? "true" : "false");
+    VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %s", key, *value == true ? "true" : "false");
 }
 
 bool vinbero_com_Config_getRequiredInt(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, int* value) {
@@ -103,7 +103,7 @@ bool vinbero_com_Config_getRequiredInt(struct vinbero_com_Config* config, struct
         return false;
     else {
         *value = VINBERO_COM_OBJECT_INTEGER(object);
-        VINBERO_COM_LOG_DEBUG("Config option %s: %d", key, *value);
+        VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %d", key, *value);
         return true;
     }
 }
@@ -115,7 +115,7 @@ bool vinbero_com_Config_getRequiredConstring(struct vinbero_com_Config* config, 
         return false;
     else {
         *value = VINBERO_COM_OBJECT_CONSTRING(object);
-        VINBERO_COM_LOG_DEBUG("Config option %s: %s", key, *value);
+        VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %s", key, *value);
         return true;
     }
 }
@@ -127,7 +127,7 @@ bool vinbero_com_Config_getRequiredDouble(struct vinbero_com_Config* config, str
         return false;
     else {
         *value = VINBERO_COM_OBJECT_REAL(object);
-        VINBERO_COM_LOG_DEBUG("Config option %s: %f", key, *value);
+        VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %f", key, *value);
         return true;
     }
 }
@@ -139,7 +139,7 @@ bool vinbero_com_Config_getRequiredBool(struct vinbero_com_Config* config, struc
         return false;
     else {
         *value = VINBERO_COM_OBJECT_BOOLEAN(object);
-        VINBERO_COM_LOG_DEBUG("Config option %s: %s", key, *value == true ? "true" : "false");
+        VINBERO_COM_LOG_DEBUG("CONFIG VALUE %s: %s", key, *value == true ? "true" : "false");
         return true;
     }
 }

@@ -65,7 +65,7 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
 #define VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, type, value) do { \
     VINBERO_MODULE_CONFIG_GET(config, module, key, type, value); \
     if(*(value) == NULL) \
-        VINBERO_COM_LOG_ERROR("Required config value %s not found at module %s", key, (module)->id); \
+        VINBERO_COM_LOG_ERROR("REQUIRED CONFIG %s NOT FOUND ON MODULE %s", key, (module)->id); \
 } while(0)
 
 #define VINBERO_COM_CONFIG_MGET(config, module, key, type, value) do { \

@@ -28,14 +28,14 @@ struct vinbero_com_Module {
 } while(0)
 
 #define VINBERO_COM_MODULE_META(name, type, value) \
-type vinbero_com_Module_Metadata_##name() { \
+type vinbero_com_Module_Meta_##name() { \
     return value; \
 }
 
 #define VINBERO_COM_MODULE_META_GET(module, name, value, ret) do { \
     typeof(*(value)) (*meta)(); \
-    VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Metadata_"name, (void**)&meta, ret); \
-    if(ret < VINBERO_COM_STATUS_SUCCESS) \
+    VINBERO_COM_DLSYM(&(module)->dlHandle, "vinbero_com_Module_Meta_"name, (void**)&meta, ret); \
+    if(*(ret) < VINBERO_COM_STATUS_SUCCESS) \
         break; \
     if(meta != NULL) \
         *(value) = meta(); \
@@ -43,6 +43,9 @@ type vinbero_com_Module_Metadata_##name() { \
 
 #define VINBERO_COM_MODULE_META_NAME(name) \
 VINBERO_COM_MODULE_META(NAME, const char*, name)
+
+#define VINBERO_COM_MODULE_META_LICENSE(license) \
+VINBERO_COM_MODULE_META(LICENSE, const char*, license)
 
 #define VINBERO_COM_MODULE_META_VERSION(major, minor, patch) \
 VINBERO_COM_MODULE_META(VERSION, const char*, #major"."#minor"."#patch) \
@@ -56,10 +59,9 @@ VINBERO_COM_MODULE_META(IN_IFACES, const char*, ifaces)
 #define VINBERO_COM_MODULE_META_OUT_IFACES(ifaces) \
 VINBERO_COM_MODULE_META(OUT_IFACES, const char*, ifaces)
 
-#define VINBERO_COM_MODULE_META_INIT(name, major, minor, patch, inIfaces, outIfaces) \
-VINBERO_COM_MODULE_META_NAME(name) \
-VINBERO_COM_MODULE_META_VERSION(major, minor, patch) \
-VINBERO_COM_MODULE_META_IN_IFACES(inIfaces) \
-VINBERO_COM_MODULE_META_OUT_IFACES(outIfaces)
+/* -1,-1 for unlimited child count */
+#define VINBERO_COM_MODULE_META_CHILD_COUNT(min, max) \
+VINBERO_COM_MODULE_META(MIN_CHILD_COUNT, int, min) \
+VINBERO_COM_MODULE_META(MAX_CHILD_COUNT, int, max)
 
 #endif
