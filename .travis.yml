@@ -3,6 +3,10 @@ sudo: required
 language: c
 compiler:
   - gcc
+branches:
+  only:
+    - master
+    - dev
 before_install:
   - pwd
   - git clone git://git.cryptomilk.org/projects/cmocka.git 
@@ -20,7 +24,7 @@ before_install:
   - cd ../
 
   - pwd
-  - git clone https://github.com/gonapps-org/libgenc
+  - git clone -b $TRAVIS_BRANCH https://github.com/gonapps-org/libgenc
   - cd libgenc
   - mkdir build
   - cd build
@@ -28,7 +32,7 @@ before_install:
   - cd ../../
 
   - pwd
-  - git clone https://github.com/vinbero/libfastdl
+  - git clone -b $TRAVIS_BRANCH https://github.com/gonapps-org/libfastdl
   - cd libfastdl
   - mkdir build
   - cd build
