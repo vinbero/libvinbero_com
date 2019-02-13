@@ -2,7 +2,6 @@
 #include <string.h>
 #include <libgenc/genc_Mtree.h>
 #include <libgenc/genc_Tree.h>
-#include <libgenc/genc_ArrayList.h>
 #include "vinbero_com_Status.h"
 #include "vinbero_com_Error.h"
 #include "vinbero_com_Config.h"
