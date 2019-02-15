@@ -9,13 +9,6 @@ branches:
     - dev
 before_install:
   - pwd
-  - git clone https://github.com/akheron/jansson
-  - cd jansson
-  - autoreconf -i
-  - ./configure --prefix=/usr
-  - cd ../
-
-  - pwd
   - git clone -b $TRAVIS_BRANCH https://github.com/gonapps-org/libgenc
   - cd libgenc
   - mkdir build
@@ -32,14 +25,7 @@ before_install:
   - cd ../../
 
 install:
-  - sudo apt-get install -y uthash-dev libcmocka-dev
-
-  - pwd
-  - cd jansson
-  - make
-  - make check
-  - sudo make install
-  - cd ../
+  - sudo apt-get install -y uthash-dev libcmocka-dev libjansson-dev
 
   - pwd
   - cd libgenc/build
