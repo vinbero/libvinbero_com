@@ -1,13 +1,7 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 project(libvinbero_com C)
 
-if(CMAKE_VERSION VERSION_LESS "3.1")
-  if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-  endif()
-else()
-  set(CMAKE_C_STANDARD 11)
-endif()
+set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
@@ -18,8 +12,8 @@ if(${BUILD_WITH_COVERAGE})
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-set(vinbero_com_version "0.4.0")
-set(vinbero_com_soversion "0.4")
+set(version "0.4.0")
+set(soversion "0.4")
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "CMAKE_BUILD_TYPE" FORCE)
