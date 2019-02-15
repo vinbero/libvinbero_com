@@ -9,14 +9,6 @@ branches:
     - dev
 before_install:
   - pwd
-  - git clone git://git.cryptomilk.org/projects/cmocka.git 
-  - cd cmocka
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
-  - cd ../../
-
-  - pwd
   - git clone https://github.com/akheron/jansson
   - cd jansson
   - autoreconf -i
@@ -40,14 +32,7 @@ before_install:
   - cd ../../
 
 install:
-  - sudo apt-get install -y uthash-dev
-#  - sudo apt-get install -y autoconf
-
-  - pwd
-  - cd cmocka/build
-  - make
-  - sudo make install
-  - cd ../../
+  - sudo apt-get install -y uthash-dev libcmocka-dev
 
   - pwd
   - cd jansson
