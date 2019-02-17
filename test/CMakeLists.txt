@@ -1,3 +1,4 @@
+include(CTest)
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE ON)
 
 file(GLOB test_srcs RELATIVE ${CMAKE_SOURCE_DIR}/test *.c)
