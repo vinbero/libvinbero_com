@@ -73,7 +73,7 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
     GENC_MTREE_NODE_GET((config)->object, (module)->id, strlen((module)->id), value); \
     if(*(value) == NULL) \
         break; \
-    GENC_MTREE_NODE_GET(*(value), key, strlen(key), value) \
+    GENC_MTREE_NODE_GET(*(value), key, strlen(key), value); \
     if(*(value) == NULL) \
         break; \
     if(VINBERO_COM_OBJECT_TYPE(*(value)) != VINBERO_COM_OBJECT_TYPE_##type) { \
