@@ -145,14 +145,14 @@ bool vinbero_com_Config_getRequiredBool(struct vinbero_com_Config* config, struc
 
 size_t vinbero_com_Config_getChildModuleCount(struct vinbero_com_Config* config, const char* moduleId) {
     struct vinbero_com_Object* object;
-    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &object)
+    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &object);
     GENC_MTREE_NODE_GET(object, "next", sizeof("next") - 1, &object);
     return GENC_TREE_NODE_SIZE(object);
 }
 
 int vinbero_com_Config_getChildModuleIds(struct vinbero_com_Config* config, const char* moduleId, struct vinbero_com_Object** ids) {
     struct vinbero_com_Object* tmp;
-    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &tmp)
+    GENC_MTREE_NODE_GET(config->object, moduleId, strlen(moduleId), &tmp);
     if(tmp == NULL)
         return VINBERO_COM_ERROR_NOT_FOUND;
     GENC_MTREE_NODE_GET(tmp, "next", sizeof("next") - 1, ids);
