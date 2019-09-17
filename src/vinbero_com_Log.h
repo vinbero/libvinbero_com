@@ -34,7 +34,7 @@ void vinbero_com_Log_printLogLevelInfo(int flag);
 
 
 #define VINBERO_COM_LOG_TRACE(...) vinbero_com_Log_raw(VINBERO_COM_LOG_LEVEL_TRACE, __FILENAME__, __LINE__, __VA_ARGS__)
-#define VINBERO_COM_LOG_TRACE2(...) VINBERO_COM_LOG_TRACE("in %s()", __func__)
+#define VINBERO_COM_LOG_TRACE2(...) VINBERO_COM_LOG_TRACE("in %s()", __FUNCTION__)
 #define VINBERO_COM_LOG_DEBUG(...) vinbero_com_Log_raw(VINBERO_COM_LOG_LEVEL_DEBUG, __FILENAME__, __LINE__, __VA_ARGS__)
 #define VINBERO_COM_LOG_INFO(...) vinbero_com_Log_raw(VINBERO_COM_LOG_LEVEL_INFO, __FILENAME__, __LINE__, __VA_ARGS__)
 #define VINBERO_COM_LOG_WARN(...) vinbero_com_Log_raw(VINBERO_COM_LOG_LEVEL_WARN, __FILENAME__, __LINE__, __VA_ARGS__)

@@ -47,25 +47,25 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json);
 (object)->type
 
 #define VINBERO_COM_OBJECT_IS_BOOLEAN(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_BOOLEAN)
+(object)->type == VINBERO_COM_OBJECT_TYPE_BOOLEAN
 
 #define VINBERO_COM_OBJECT_IS_INTEGER(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_INTEGER)
+(object)->type == VINBERO_COM_OBJECT_TYPE_INTEGER
 
 #define VINBERO_COM_OBJECT_IS_REAL(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_REAL)
+(object)->type == VINBERO_COM_OBJECT_TYPE_REAL
 
 #define VINBERO_COM_OBJECT_IS_STRING(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_STRING)
+(object)->type == VINBERO_COM_OBJECT_TYPE_STRING
 
 #define VINBERO_COM_OBJECT_IS_CONSTRING(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_CONSTRING)
+(object)->type == VINBERO_COM_OBJECT_TYPE_CONSTRING
 
 #define VINBERO_COM_OBJECT_IS_ARRAY(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_ARRAY)
+(object)->type == VINBERO_COM_OBJECT_TYPE_ARRAY
 
 #define VINBERO_COM_OBJECT_IS_MAP(object) \
-((object)->type == VINBERO_COM_OBJECT_TYPE_MAP)
+(object)->type == VINBERO_COM_OBJECT_TYPE_MAP
 
 #define VINBERO_COM_OBJECT_BOOLEAN(object) \
 (object)->boolean
