@@ -92,7 +92,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
  * @param[IN]   parser    yaml parser object
  * 
 */
-struct vinbero_com_Object* vinbero_com_Object_formYaml(yaml_parser_t* parser)
+struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
 {
     struct vinbero_com_Object* object = malloc(sizeof(struct vinbero_com_Object));
     struct vinbero_com_Object* childObject;
@@ -123,7 +123,7 @@ struct vinbero_com_Object* vinbero_com_Object_formYaml(yaml_parser_t* parser)
     /* just a value string */
     case YAML_SCALAR_TOKEN: {
         //child object is a const string object.
-        childObject = vinbero_com_Object_Constring_formStr(token.data.scalar.value);
+        childObject = vinbero_com_Object_Constring_fromStr(token.data.scalar.value);
 
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
         GENC_MTREE_NODE_KEY(childObject) = key;
@@ -133,7 +133,7 @@ struct vinbero_com_Object* vinbero_com_Object_formYaml(yaml_parser_t* parser)
     }
     /* value is key-value again */
     case YAML_BLOCK_MAPPING_START_TOKEN: {
-        childObject = vinbero_com_Object_formYaml(parser);
+        childObject = vinbero_com_Object_fromYaml(parser);
         GENC_MTREE_NODE_KEY(childObject) = key;
         GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
         GENC_MTREE_NODE_SET(object, childObject, &oldObject);
@@ -145,7 +145,7 @@ struct vinbero_com_Object* vinbero_com_Object_formYaml(yaml_parser_t* parser)
         do {
             get_next_token(parser, &token);
             if (token.type == YAML_SCALAR_TOKEN) {
-                childObject = vinbero_com_Object_Constring_formStr(token.data.scalar.value);
+                childObject = vinbero_com_Object_Constring_fromStr(token.data.scalar.value);
 
                 GENC_TREE_NODE_ADD(object, childObject);
             }
@@ -168,7 +168,7 @@ struct vinbero_com_Object* vinbero_com_Object_formYaml(yaml_parser_t* parser)
  * @param[IN]   str    string that build VINBERO_COM_OBJECT_TYPE_CONSTRING
  * 
 */
-struct vinbero_com_Object* vinbero_com_Object_Constring_formStr(const char* str)
+struct vinbero_com_Object* vinbero_com_Object_Constring_fromStr(const char* str)
 {
     struct vinbero_com_Object* object = malloc(sizeof(struct vinbero_com_Object));
     VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_CONSTRING);
