@@ -7,6 +7,12 @@
 #include "vinbero_com_Config.h"
 #include "vinbero_com_Log.h"
 
+enum vinbero_com_Config_Type {
+    VINBERO_COM_CONFIG_TYPE_JSON,
+    VINBERO_COM_CONFIG_TYPE_YAML,
+    VINBERO_COM_CONFIG_TYPE_TOML
+};
+
 int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char* input) {
     json_error_t configError;
     if(config->object == NULL) {
