@@ -3,6 +3,12 @@
 #include <libgenc/genc_Mtree.h>
 #include "vinbero_com_Object.h"
 
+void vinbero_com_Object_yaml_destory_yaml_parser(yaml_parser_t* parser);
+void vinbero_com_Object_yaml_get_next_token(yaml_parser_t* parser, yaml_token_t* token);
+char* vinbero_com_Object_yaml_get_next_token_type(yaml_parser_t* parser, yaml_token_t* token, yaml_token_type_t type);
+char* vinbero_com_Object_yaml_get_next_key(yaml_parser_t* parser, yaml_token_t* token);
+struct vinbero_com_Object* vinbero_com_Object_Constring_fromStr(const char* str);
+
 void vinbero_com_Object_destroy(struct vinbero_com_Object* object) {
     switch(VINBERO_COM_OBJECT_TYPE(object)) {
     case VINBERO_COM_OBJECT_TYPE_ARRAY:
@@ -98,11 +104,11 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
     struct vinbero_com_Object* childObject;
     struct vinbero_com_Object* oldObject;
     yaml_token_t token;
-    char* key = get_next_key(parser, &token);
+    char* key = vinbero_com_Object_yaml_get_next_key(parser, &token);
 
     // token.type = YAML_VALUE_TOKEN
-    get_next_token_type(parser, &token, YAML_VALUE_TOKEN);
-    get_next_token(parser, &token);
+    vinbero_com_Object_yaml_get_next_token_type(parser, &token, YAML_VALUE_TOKEN);
+    vinbero_com_Object_yaml_get_next_token(parser, &token);
 
     /* 3 Possibility of token after value token.
      * [value token] - [scalar : string]
@@ -123,7 +129,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
     /* just a value string */
     case YAML_SCALAR_TOKEN: {
         //child object is a const string object.
-        childObject = vinbero_com_Object_Constring_fromStr(token.data.scalar.value);
+        childObject = vinbero_com_Object_Constring_fromStr((const char*)token.data.scalar.value);
 
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
         GENC_MTREE_NODE_KEY(childObject) = key;
@@ -143,9 +149,9 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
     case YAML_BLOCK_SEQUENCE_START_TOKEN: {
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_ARRAY);
         do {
-            get_next_token(parser, &token);
+            vinbero_com_Object_yaml_get_next_token(parser, &token);
             if (token.type == YAML_SCALAR_TOKEN) {
-                childObject = vinbero_com_Object_Constring_fromStr(token.data.scalar.value);
+                childObject = vinbero_com_Object_Constring_fromStr((const char*)token.data.scalar.value);
 
                 GENC_TREE_NODE_ADD(object, childObject);
             }
@@ -172,7 +178,7 @@ struct vinbero_com_Object* vinbero_com_Object_Constring_fromStr(const char* str)
 {
     struct vinbero_com_Object* object = malloc(sizeof(struct vinbero_com_Object));
     VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_CONSTRING);
-    VINBERO_COM_OBJECT_CONSTRING(childObject) = str;
+    VINBERO_COM_OBJECT_CONSTRING(object) = str;
 
     return object;
 }
@@ -191,7 +197,7 @@ char* vinbero_com_Object_yaml_get_next_key(yaml_parser_t* parser, yaml_token_t* 
     } while( token->type != YAML_KEY_TOKEN );
     // token must be scalar(key string)
     yaml_parser_scan(parser, token);
-    return token.data.scalar.value;
+    return (char*)token->data.scalar.value;
 }
 
 /*
@@ -208,7 +214,7 @@ char* vinbero_com_Object_yaml_get_next_token_type(yaml_parser_t* parser, yaml_to
     } while( token->type != type );
     // token must be scalar(key string)
     yaml_parser_scan(parser, token);
-    return token.data.scalar.value;
+    return (char*)token->data.scalar.value;
 }
 
 /*
@@ -230,5 +236,5 @@ void vinbero_com_Object_yaml_get_next_token(yaml_parser_t* parser, yaml_token_t*
 */
 void vinbero_com_Object_yaml_destory_yaml_parser(yaml_parser_t* parser)
 {
-    yaml_parser_delete(&parser);
+    yaml_parser_delete(parser);
 }

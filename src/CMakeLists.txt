@@ -21,7 +21,7 @@ set_target_properties(
     PUBLIC_HEADER "${public_headers}"
 )
 
-target_link_libraries(vinbero_com jansson fastdl)
+target_link_libraries(vinbero_com jansson fastdl yaml)
 
 install(
     TARGETS vinbero_com
