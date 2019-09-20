@@ -14,6 +14,8 @@ struct vinbero_com_Config {
 
 int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char* input);
 int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path);
+int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const char* path);
+int vinbero_com_Config_fromYamlFile(struct vinbero_com_Config* config, const char* path);
 int vinbero_com_Config_check(struct vinbero_com_Config* config, const char* moduleId);
 
 void vinbero_com_Config_getInt(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, int* out, int defaultValue);

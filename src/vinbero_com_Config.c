@@ -23,6 +23,10 @@ int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char*
 }
 
 int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) {
+    return vinbero_com_Config_fromJsonFile(config, path);
+}
+
+int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const char* path) {
     json_error_t configError;
     if(config->object == NULL) {
         if((config->json = json_load_file(path, 0, &configError)) == NULL) {
@@ -35,6 +39,11 @@ int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* p
     }
     config->object = vinbero_com_Object_fromJson(config->json);
     return VINBERO_COM_STATUS_SUCCESS;
+}
+
+
+int vinbero_com_Config_fromYamlFile(struct vinbero_com_Config* config, const char* path) {
+    return VINBERO_COM_ERROR_UNKNOWN;
 }
 
 int vinbero_com_Config_check(struct vinbero_com_Config* config, const char* moduleId) {
