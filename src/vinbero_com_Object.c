@@ -135,7 +135,8 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, co
         break;
     }
     /* value is key-value again */
-    case YAML_BLOCK_MAPPING_START_TOKEN: {
+    case YAML_BLOCK_MAPPING_START_TOKEN:
+    case YAML_FLOW_MAPPING_START_TOKEN: {
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
         vinbero_com_Object_yaml_get_next_token(parser, &token);
         do {
@@ -155,7 +156,8 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, co
         break;
     }
     /* value is a list */
-    case YAML_BLOCK_SEQUENCE_START_TOKEN: {
+    case YAML_BLOCK_SEQUENCE_START_TOKEN:
+    case YAML_FLOW_SEQUENCE_START_TOKEN: {
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_ARRAY);
         do {
             vinbero_com_Object_yaml_get_next_token(parser, &token);
