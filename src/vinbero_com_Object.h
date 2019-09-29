@@ -33,7 +33,8 @@ struct vinbero_com_Object {
 
 void vinbero_com_Object_destroy(struct vinbero_com_Object* object);
 struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json);
-struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, unsigned char* key);
+struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, const char* key);
+void vinbero_com_Object_destory_yaml_parser(yaml_parser_t* parser);
 
 #define VINBERO_COM_OBJECT_INIT(object, _type) { \
     memset(object, 0, sizeof(struct vinbero_com_Object)); \

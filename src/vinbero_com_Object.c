@@ -3,10 +3,8 @@
 #include <libgenc/genc_Mtree.h>
 #include "vinbero_com_Object.h"
 
-void vinbero_com_Object_yaml_destory_yaml_parser(yaml_parser_t* parser);
 void vinbero_com_Object_yaml_get_next_token(yaml_parser_t* parser, yaml_token_t* token);
 char* vinbero_com_Object_yaml_get_next_token_type(yaml_parser_t* parser, yaml_token_t* token, yaml_token_type_t type);
-char* vinbero_com_Object_yaml_get_next_key(yaml_parser_t* parser, yaml_token_t* token);
 struct vinbero_com_Object* vinbero_com_Object_Constring_fromStr(const char* str);
 
 void vinbero_com_Object_destroy(struct vinbero_com_Object* object) {
@@ -98,7 +96,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
  * @param[IN]   parser    yaml parser object
  * 
 */
-struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, unsigned char* key)
+struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, const char* key)
 {
     struct vinbero_com_Object* object = malloc(sizeof(struct vinbero_com_Object));
     struct vinbero_com_Object* childObject;
@@ -106,7 +104,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, un
     yaml_token_t token;
 
     // token.type = YAML_VALUE_TOKEN
-    yaml_parser_scan(parser, &token);
+    vinbero_com_Object_yaml_get_next_token(parser, &token);
 
     /* 3 Possibility of token after value token.
      * [value token] - [scalar : string]
@@ -121,7 +119,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, un
      *                          - libyaml
      *                          - libpcap
     */
-    yaml_parser_scan(parser, &token);
+    vinbero_com_Object_yaml_get_next_token(parser, &token);
 
     switch (token.type)
     {
@@ -131,26 +129,26 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, un
         childObject = vinbero_com_Object_Constring_fromStr((const char*)token.data.scalar.value);
 
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
-        GENC_MTREE_NODE_KEY(childObject) = (const char*)key;
-        GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen((const char*)key);
+        GENC_MTREE_NODE_KEY(childObject) = key;
+        GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
         GENC_MTREE_NODE_SET(object, childObject, &oldObject);
         break;
     }
     /* value is key-value again */
     case YAML_BLOCK_MAPPING_START_TOKEN: {
         // key
-        yaml_parser_scan(parser, &token);
+        vinbero_com_Object_yaml_get_next_token(parser, &token);
         do {
             // key scalar str
-            yaml_parser_scan(parser, &token);
-            childObject = vinbero_com_Object_fromYaml(parser, token.data.scalar.value);
+            vinbero_com_Object_yaml_get_next_token(parser, &token);
+            childObject = vinbero_com_Object_fromYaml(parser, (const char*)token.data.scalar.value);
 
-            GENC_MTREE_NODE_KEY(childObject) = (const char*)key;
-            GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen((const char*)key);
+            GENC_MTREE_NODE_KEY(childObject) = key;
+            GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
             GENC_MTREE_NODE_SET(object, childObject, &oldObject);
             
             // must be key or block_end
-            yaml_parser_scan(parser, &token);
+            vinbero_com_Object_yaml_get_next_token(parser, &token);
 
             // if (token.type != YAML_KEY_TOKEN && token.type != YAML_BLOCK_END_TOKEN) error!!
         } while (token.type != YAML_BLOCK_END_TOKEN);
@@ -192,23 +190,6 @@ struct vinbero_com_Object* vinbero_com_Object_Constring_fromStr(const char* str)
     VINBERO_COM_OBJECT_CONSTRING(object) = str;
 
     return object;
-}
-
-/*
- * Get next key type token.
- * This function iterate until meeting key type token.
- * 
- * @param[IN]    parser    yaml parser object
- * @param[OUT]   token     return next token here
-*/
-char* vinbero_com_Object_yaml_get_next_key(yaml_parser_t* parser, yaml_token_t* token)
-{
-    do {
-        yaml_parser_scan(parser, token);
-    } while( token->type != YAML_KEY_TOKEN );
-    // token must be scalar(key string)
-    yaml_parser_scan(parser, token);
-    return (char*)token->data.scalar.value;
 }
 
 /*

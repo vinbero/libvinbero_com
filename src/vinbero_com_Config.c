@@ -10,13 +10,16 @@
 enum vinbero_com_Config_Type {
     VINBERO_COM_CONFIG_TYPE_JSON,
     VINBERO_COM_CONFIG_TYPE_YAML,
-    VINBERO_COM_CONFIG_TYPE_TOML
+    VINBERO_COM_CONFIG_TYPE_TOML,
+    VINBERO_COM_CONFIG_TYPE_UNKNOWN
 };
+enum vinbero_com_Config_Type vinbero_com_Config_get_file_type(const char* path);
+const char* vinbero_com_Config_get_ext_point(const char* path);
 
 int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char* input) {
     json_error_t configError;
     if(config->object == NULL) {
-        if((config->json = json_loads(input, 0, &configError)) == NULL) {
+        if((config->config_object.json = json_loads(input, 0, &configError)) == NULL) {
             VINBERO_COM_LOG_ERROR("JSON PARSING ERROR %s: %d: %s", configError.source, configError.line, configError.text);
             return VINBERO_COM_ERROR_INVALID_CONFIG;
         }
@@ -24,18 +27,62 @@ int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char*
         VINBERO_COM_LOG_ERROR("CONFIG IS ALREADY ALLOCATED");
         return VINBERO_COM_ERROR_ALREADY;
     }
-    config->object = vinbero_com_Object_fromJson(config->json);
+    config->object = vinbero_com_Object_fromJson(config->config_object.json);
     return VINBERO_COM_STATUS_SUCCESS;
 }
 
-int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) {
-    return vinbero_com_Config_fromJsonFile(config, path);
+int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) 
+{
+    switch ( vinbero_com_Config_get_file_type(path) ) {
+        case VINBERO_COM_CONFIG_TYPE_YAML:
+            return vinbero_com_Config_fromYamlFile(config, path);
+        case VINBERO_COM_CONFIG_TYPE_JSON:
+            return vinbero_com_Config_fromJsonFile(config, path);
+        case VINBERO_COM_CONFIG_TYPE_TOML:
+        default:
+            return VINBERO_COM_ERROR_INVALID_CONFIG;
+    }
+}
+
+enum vinbero_com_Config_Type vinbero_com_Config_get_file_type(const char* path)
+{
+    // check the extension
+    // json, yaml
+    // TODO: toml
+    // if ext not found => error
+
+    int len = strlen(path);
+    static const char* conf_ext[4] = { "yaml", "yml", "json", "toml" };
+    static const enum vinbero_com_Config_Type types[4] = { 
+        VINBERO_COM_CONFIG_TYPE_YAML,
+        VINBERO_COM_CONFIG_TYPE_YAML,
+        VINBERO_COM_CONFIG_TYPE_JSON,
+        VINBERO_COM_CONFIG_TYPE_TOML
+    };
+
+    for (int i = 0; i < 4; ++i) {
+        const char* ext_point = vinbero_com_Config_get_ext_point(path);
+        if (ext_point != NULL && strcasecmp(ext_point, conf_ext[i]) == 0) {
+            return types[i]; 
+        }
+    }
+    return VINBERO_COM_CONFIG_TYPE_UNKNOWN;
+}
+
+const char* vinbero_com_Config_get_ext_point(const char* path) 
+{
+    int len = strlen(path);
+
+    for (int i = len - 1; i > 0; --i) {
+        if ( path[i] == '.') return path + i + 1;
+    }
+    return NULL;
 }
 
 int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const char* path) {
     json_error_t configError;
     if(config->object == NULL) {
-        if((config->json = json_load_file(path, 0, &configError)) == NULL) {
+        if((config->config_object.json = json_load_file(path, 0, &configError)) == NULL) {
             VINBERO_COM_LOG_ERROR("%s: %d: %s", configError.source, configError.line, configError.text);
             return VINBERO_COM_ERROR_INVALID_CONFIG;
         }
@@ -43,13 +90,31 @@ int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const cha
         VINBERO_COM_LOG_ERROR("CONFIG IS ALREADY ALLOCATED");
         return VINBERO_COM_ERROR_ALREADY;
     }
-    config->object = vinbero_com_Object_fromJson(config->json);
+    config->object = vinbero_com_Object_fromJson(config->config_object.json);
     return VINBERO_COM_STATUS_SUCCESS;
 }
 
 
 int vinbero_com_Config_fromYamlFile(struct vinbero_com_Config* config, const char* path) {
-    return VINBERO_COM_ERROR_UNKNOWN;
+    FILE* yaml_file = fopen(path, "r");
+    if (!yaml_file) return VINBERO_COM_ERROR_UNKNOWN;
+
+    yaml_parser_t* parser = (yaml_parser_t*)malloc(sizeof(yaml_parser_t));
+    if( !yaml_parser_initialize(parser)) 
+        return VINBERO_COM_ERROR_UNKNOWN;
+    
+    yaml_parser_set_input_file(parser, yaml_file);
+    config->config_object.yaml = parser;
+
+    // set empty string
+    char* empty_str = (char*)malloc(1);
+    *empty_str = '\0';
+
+    if (!config->object)
+        config->object = vinbero_com_Object_fromYaml(config->config_object.yaml, (const char*)empty_str);
+    else return VINBERO_COM_ERROR_ALREADY;
+
+    return VINBERO_COM_STATUS_SUCCESS;
 }
 
 int vinbero_com_Config_check(struct vinbero_com_Config* config, const char* moduleId) {
@@ -177,7 +242,7 @@ int vinbero_com_Config_getChildModuleIds(struct vinbero_com_Config* config, cons
 }
 
 int vinbero_com_Config_init(struct vinbero_com_Config* config) {
-    config->json = NULL;
+    config->config_object.json = NULL;
     config->object = NULL;
     return VINBERO_COM_STATUS_SUCCESS;
 }
@@ -186,7 +251,8 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config) {
     if(config->object != NULL) {
         vinbero_com_Object_destroy(config->object);
     }
-    if(config->json != NULL)
-        json_decref(config->json);
+    // TODO: add yaml file destruction
+    if(config->config_object.json != NULL)
+        json_decref(config->config_object.json);
     return VINBERO_COM_STATUS_SUCCESS;
 }
