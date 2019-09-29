@@ -36,7 +36,7 @@ int vinbero_com_Config_getChildModuleIds(struct vinbero_com_Config* config, cons
 int vinbero_com_Config_init(struct vinbero_com_Config* config);
 int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
 
-#define VINBERO_MODULE_CONFIG_GET(config, module, key, type, value) do { \
+#define VINBERO_COM_MODULE_CONFIG_GET(config, module, key, type, value) do { \
     *(value) = NULL; \
     GENC_MTREE_NODE_GET((config)->object, (module)->id, strlen((module)->id), value); \
     if(*(value) != NULL) { \
@@ -67,8 +67,8 @@ int vinbero_com_Config_destroy(struct vinbero_com_Config* config);
     } \
 } while(0)
 
-#define VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, type, value) do { \
-    VINBERO_MODULE_CONFIG_GET(config, module, key, type, value); \
+#define VINBERO_COM_MODULE_CONFIG_GET_REQ(config, module, key, type, value) do { \
+    VINBERO_COM_MODULE_CONFIG_GET(config, module, key, type, value); \
     if(*(value) == NULL) \
         VINBERO_COM_LOG_ERROR("REQUIRED CONFIG %s NOT FOUND ON MODULE %s", key, (module)->id); \
 } while(0)
