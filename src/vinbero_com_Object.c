@@ -125,7 +125,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, co
     {
     /* just a value string */
     case YAML_SCALAR_TOKEN: {
-        //child object is a const string object.
+        // child object is a const string object.
         childObject = vinbero_com_Object_Constring_fromStr((const char*)token.data.scalar.value);
 
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
@@ -136,8 +136,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, co
     }
     /* value is key-value again */
     case YAML_BLOCK_MAPPING_START_TOKEN: {
-        // key
-        vinbero_com_Object_yaml_get_next_token(parser, &token);
+        VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
         do {
             // key scalar str
             vinbero_com_Object_yaml_get_next_token(parser, &token);
