@@ -137,6 +137,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser, co
     /* value is key-value again */
     case YAML_BLOCK_MAPPING_START_TOKEN: {
         VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_MAP);
+        vinbero_com_Object_yaml_get_next_token(parser, &token);
         do {
             // key scalar str
             vinbero_com_Object_yaml_get_next_token(parser, &token);
