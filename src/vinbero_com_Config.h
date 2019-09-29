@@ -6,10 +6,10 @@
 #include "vinbero_com_Object.h"
 
 struct vinbero_com_Config {
-    union _config_object {
+    union {
         json_t* json;
         yaml_parser_t* yaml;
-    } config_object;
+    };
     struct vinbero_com_Object* object;
 };
 

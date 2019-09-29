@@ -26,7 +26,7 @@ static void vinbero_com_Object_test(void** state) {
     struct vinbero_com_Config config;
     vinbero_com_Config_init(&config);
     assert_int_equal(vinbero_com_Config_fromFile(&config, "with_children.json"), VINBERO_COM_STATUS_SUCCESS);
-    old = vinbero_com_Object_fromJson(config.config_object.json);
+    old = vinbero_com_Object_fromJson(config.json);
 }
 
 int main() {
