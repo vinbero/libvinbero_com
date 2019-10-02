@@ -104,13 +104,8 @@ int vinbero_com_Config_fromYamlFile(struct vinbero_com_Config* config, const cha
     
     yaml_parser_set_input_file(parser, yaml_file);
     config->yaml = parser;
-
-    // set empty string
-    char* empty_str = (char*)malloc(1);
-    *empty_str = '\0';
-
     if (!config->object)
-        config->object = vinbero_com_Object_fromYaml(config->yaml, (const char*)empty_str);
+        config->object = vinbero_com_Object_fromYaml(config->yaml);
     else return VINBERO_COM_ERROR_ALREADY;
 
     return VINBERO_COM_STATUS_SUCCESS;
@@ -136,7 +131,7 @@ int vinbero_com_Config_check(struct vinbero_com_Config* config, const char* modu
 
 void vinbero_com_Config_getInt(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, int* value, int defaultValue) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET(config, module, key, INTEGER, &object);
+    VINBERO_COM_MODULE_CONFIG_GET(config, module, key, INTEGER, &object);
     if(object == NULL)
         *value = defaultValue;
     else
@@ -146,7 +141,7 @@ void vinbero_com_Config_getInt(struct vinbero_com_Config* config, struct vinbero
 
 void vinbero_com_Config_getConstring(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, const char** value, const char* defaultValue) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET(config, module, key, CONSTRING, &object);
+    VINBERO_COM_MODULE_CONFIG_GET(config, module, key, CONSTRING, &object);
     if(object == NULL)
         *value = defaultValue;
     else
@@ -156,7 +151,7 @@ void vinbero_com_Config_getConstring(struct vinbero_com_Config* config, struct v
 
 void vinbero_com_Config_getDouble(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, double* value, double defaultValue) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET(config, module, key, REAL, &object);
+    VINBERO_COM_MODULE_CONFIG_GET(config, module, key, REAL, &object);
     if(object == NULL)
         *value = defaultValue;
     else
@@ -166,7 +161,7 @@ void vinbero_com_Config_getDouble(struct vinbero_com_Config* config, struct vinb
 
 void vinbero_com_Config_getBool(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, bool* value, bool defaultValue) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET(config, module, key, BOOLEAN, &object);
+    VINBERO_COM_MODULE_CONFIG_GET(config, module, key, BOOLEAN, &object);
     if(object == NULL)
         *value = defaultValue;
     else
@@ -176,7 +171,7 @@ void vinbero_com_Config_getBool(struct vinbero_com_Config* config, struct vinber
 
 bool vinbero_com_Config_getRequiredInt(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, int* value) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, INTEGER, &object);
+    VINBERO_COM_MODULE_CONFIG_GET_REQ(config, module, key, INTEGER, &object);
     if(object == NULL)
         return false;
     else {
@@ -188,7 +183,7 @@ bool vinbero_com_Config_getRequiredInt(struct vinbero_com_Config* config, struct
 
 bool vinbero_com_Config_getRequiredConstring(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, const char** value) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
+    VINBERO_COM_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
     if(object == NULL)
         return false;
     else {
@@ -200,7 +195,7 @@ bool vinbero_com_Config_getRequiredConstring(struct vinbero_com_Config* config, 
 
 bool vinbero_com_Config_getRequiredDouble(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, double* value) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
+    VINBERO_COM_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
     if(object == NULL)
         return false;
     else {
@@ -212,7 +207,7 @@ bool vinbero_com_Config_getRequiredDouble(struct vinbero_com_Config* config, str
 
 bool vinbero_com_Config_getRequiredBool(struct vinbero_com_Config* config, struct vinbero_com_Module* module, const char* key, bool* value) {
     struct vinbero_com_Object* object;
-    VINBERO_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
+    VINBERO_COM_MODULE_CONFIG_GET_REQ(config, module, key, CONSTRING, &object);
     if(object == NULL)
         return false;
     else {
