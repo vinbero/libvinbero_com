@@ -34,11 +34,11 @@ int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char*
 int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) 
 {
     switch ( vinbero_com_Config_get_file_type(path) ) {
-        case VINBERO_COM_CONFIG_TYPE_YAML:
-            return vinbero_com_Config_fromYamlFile(config, path);
         case VINBERO_COM_CONFIG_TYPE_JSON:
             return vinbero_com_Config_fromJsonFile(config, path);
         case VINBERO_COM_CONFIG_TYPE_TOML:
+        case VINBERO_COM_CONFIG_TYPE_YAML:
+            //return vinbero_com_Config_fromYamlFile(config, path);
         default:
             return VINBERO_COM_ERROR_INVALID_CONFIG;
     }
