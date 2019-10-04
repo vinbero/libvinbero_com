@@ -74,7 +74,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
                 vinbero_com_Object_destroy(object);
                 object = NULL;
             }
-            GENC_MTREE_NODE_KEY(childObject) = (uint8_t*)key;
+            GENC_MTREE_NODE_KEY(childObject) = (const uint8_t*)key;
             GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
             GENC_MTREE_NODE_SET(object, childObject, &oldObject);
         }
