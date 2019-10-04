@@ -74,7 +74,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
                 vinbero_com_Object_destroy(object);
                 object = NULL;
             }
-            GENC_MTREE_NODE_KEY(childObject) = key;
+            GENC_MTREE_NODE_KEY(childObject) = (uint8_t*)key;
             GENC_MTREE_NODE_KEY_LENGTH(childObject) = strlen(key);
             GENC_MTREE_NODE_SET(object, childObject, &oldObject);
         }
@@ -95,6 +95,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromJson(json_t* json) {
 */
 struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
 {
+/*
     struct vinbero_com_Object* object;
     struct vinbero_com_Object* keyObject;
     struct vinbero_com_Object* childObject;
@@ -136,7 +137,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
                     break;
                 case YAML_VALUE_TOKEN:
                     childObject = vinbero_com_Object_fromYaml(parser);
-                    GENC_MTREE_NODE_KEY(childObject) = keyObject;
+                    GENC_MTREE_NODE_KEY(childObject) = (const uint8_t*)keyObject;
                     GENC_MTREE_NODE_KEY_LENGTH(childObject) = sizeof(struct vinbero_com_Object);
 
                     GENC_MTREE_NODE_SET(object, childObject, &oldObject);
@@ -168,7 +169,7 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
                     break;
                 case YAML_VALUE_TOKEN:
                     childObject = vinbero_com_Object_fromYaml(parser);
-                    GENC_MTREE_NODE_KEY(childObject) = keyObject;
+                    GENC_MTREE_NODE_KEY(childObject) = (const uint8_t*)keyObject;
                     GENC_MTREE_NODE_KEY_LENGTH(childObject) = sizeof(struct vinbero_com_Object);
                     GENC_MTREE_NODE_SET(object, childObject, &oldObject);
                     if(oldObject != NULL)
@@ -200,7 +201,10 @@ struct vinbero_com_Object* vinbero_com_Object_fromYaml(yaml_parser_t* parser)
             VINBERO_COM_OBJECT_INIT(object, VINBERO_COM_OBJECT_TYPE_CONSTRING);
             VINBERO_COM_OBJECT_CONSTRING(object) = (const char*)token.data.scalar.value;
             return object;
+        default:
+            break;
         }
     }
+*/
     return NULL;
 }
