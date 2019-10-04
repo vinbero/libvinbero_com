@@ -13,8 +13,6 @@ enum vinbero_com_Config_Type {
     VINBERO_COM_CONFIG_TYPE_TOML,
     VINBERO_COM_CONFIG_TYPE_UNKNOWN
 };
-enum vinbero_com_Config_Type vinbero_com_Config_get_file_type(const char* path);
-const char* vinbero_com_Config_get_ext_point(const char* path);
 
 int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char* input) {
     json_error_t configError;
@@ -31,9 +29,39 @@ int vinbero_com_Config_fromString(struct vinbero_com_Config* config, const char*
     return VINBERO_COM_STATUS_SUCCESS;
 }
 
-int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) 
-{
-    switch ( vinbero_com_Config_get_file_type(path) ) {
+static const char* vinbero_com_Config_getExtPoint(const char* path) {
+    int len = strlen(path);
+    for(int i = len - 1; i > 0; --i) {
+        if(path[i] == '.')
+            return path + i + 1;
+    }
+    return NULL;
+}
+
+static enum vinbero_com_Config_Type vinbero_com_Config_getFileType(const char* path) {
+    // check the extension
+    // json, yaml
+    // TODO: toml
+    // if ext not found => error
+
+    static const char* confExt[4] = { "yaml", "yml", "json", "toml" };
+    static const enum vinbero_com_Config_Type types[4] = { 
+        VINBERO_COM_CONFIG_TYPE_YAML,
+        VINBERO_COM_CONFIG_TYPE_YAML,
+        VINBERO_COM_CONFIG_TYPE_JSON,
+        VINBERO_COM_CONFIG_TYPE_TOML
+    };
+
+    for(int i = 0; i < 4; ++i) {
+        const char* extPoint = vinbero_com_Config_getExtPoint(path);
+        if(extPoint != NULL && strcasecmp(extPoint, confExt[i]) == 0)
+            return types[i]; 
+    }
+    return VINBERO_COM_CONFIG_TYPE_UNKNOWN;
+}
+
+int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* path) {
+    switch ( vinbero_com_Config_getFileType(path) ) {
         case VINBERO_COM_CONFIG_TYPE_JSON:
             return vinbero_com_Config_fromJsonFile(config, path);
         case VINBERO_COM_CONFIG_TYPE_TOML:
@@ -42,40 +70,6 @@ int vinbero_com_Config_fromFile(struct vinbero_com_Config* config, const char* p
         default:
             return VINBERO_COM_ERROR_INVALID_CONFIG;
     }
-}
-
-enum vinbero_com_Config_Type vinbero_com_Config_get_file_type(const char* path)
-{
-    // check the extension
-    // json, yaml
-    // TODO: toml
-    // if ext not found => error
-
-    static const char* conf_ext[4] = { "yaml", "yml", "json", "toml" };
-    static const enum vinbero_com_Config_Type types[4] = { 
-        VINBERO_COM_CONFIG_TYPE_YAML,
-        VINBERO_COM_CONFIG_TYPE_YAML,
-        VINBERO_COM_CONFIG_TYPE_JSON,
-        VINBERO_COM_CONFIG_TYPE_TOML
-    };
-
-    for (int i = 0; i < 4; ++i) {
-        const char* ext_point = vinbero_com_Config_get_ext_point(path);
-        if (ext_point != NULL && strcasecmp(ext_point, conf_ext[i]) == 0) {
-            return types[i]; 
-        }
-    }
-    return VINBERO_COM_CONFIG_TYPE_UNKNOWN;
-}
-
-const char* vinbero_com_Config_get_ext_point(const char* path) 
-{
-    int len = strlen(path);
-
-    for (int i = len - 1; i > 0; --i) {
-        if ( path[i] == '.') return path + i + 1;
-    }
-    return NULL;
 }
 
 int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const char* path) {
@@ -93,16 +87,15 @@ int vinbero_com_Config_fromJsonFile(struct vinbero_com_Config* config, const cha
     return VINBERO_COM_STATUS_SUCCESS;
 }
 
-
 int vinbero_com_Config_fromYamlFile(struct vinbero_com_Config* config, const char* path) {
-    FILE* yaml_file = fopen(path, "r");
-    if (!yaml_file) return VINBERO_COM_ERROR_UNKNOWN;
+    FILE* yamlFile = fopen(path, "r");
+    if (!yamlFile) return VINBERO_COM_ERROR_UNKNOWN;
 
     yaml_parser_t* parser = (yaml_parser_t*)malloc(sizeof(yaml_parser_t));
     if( !yaml_parser_initialize(parser)) 
         return VINBERO_COM_ERROR_UNKNOWN;
     
-    yaml_parser_set_input_file(parser, yaml_file);
+    yaml_parser_set_input_file(parser, yamlFile);
     config->yaml = parser;
     if (!config->object)
         config->object = vinbero_com_Object_fromYaml(config->yaml);
